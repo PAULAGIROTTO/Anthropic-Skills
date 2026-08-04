@@ -1,0 +1,26 @@
+{
+  "skill_name": "academic-content-adapter",
+  "evals": [
+    {
+      "id": 1,
+      "name": "dyslexia-science-text",
+      "prompt": "Minha filha tem 8 anos, está na 3ª série, e tem dislexia. A professora passou esse texto de ciências sobre o ciclo da água e ela trava em quase toda frase tentando ler sozinha. Pode adaptar pra ficar mais fácil? Texto: \"O ciclo da água, também conhecido como ciclo hidrológico, é o processo contínuo de circulação da água entre a superfície terrestre e a atmosfera. Esse processo é composto por diversas etapas, entre elas a evaporação, que ocorre quando o calor do sol transforma a água líquida presente em rios, lagos e oceanos em vapor; a condensação, na qual o vapor de água presente na atmosfera se resfria e se transforma em pequenas gotículas, formando as nuvens; e a precipitação, que consiste na queda dessa água, na forma de chuva, granizo ou neve, de volta à superfície terrestre, reiniciando assim o ciclo.\"",
+      "expected_output": "A simplified rewrite of the water-cycle text: short sentences, one idea per sentence, plain vocabulary, key terms (evaporação, condensação, precipitação) kept but explained simply, dyslexia-friendly formatting guidance (short paragraphs, no italics, left-aligned) if a document is generated, and the scientific content stays accurate.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "adhd-math-exam",
+      "prompt": "Sou professor do 5º ano e tenho um aluno com TDAH que se distrai e trava quando o enunciado da prova é muito longo. Preciso adaptar essas questões de matemática pra ele fazer a prova junto com a turma, mas sem tirar a dificuldade real do conteúdo, só facilitar o formato. Questões: \"1) Marcos tinha 3 caixas com 12 laranjas em cada uma. Ele deu 8 laranjas para o vizinho e depois comprou mais 2 caixas com 15 laranjas cada uma. Quantas laranjas Marcos tem agora ao todo? 2) Uma loja vendeu 145 camisetas na segunda-feira e 98 camisetas na terça-feira. Sabendo que a loja tinha um estoque inicial de 500 camisetas, quantas camisetas restaram no estoque após esses dois dias de venda?\"",
+      "expected_output": "The two word problems adapted into a numbered/chunked format (breaking the multi-step math into separate labeled steps), important numbers/actions visually emphasized, instructions broken into single actions, while the underlying math (same numbers, same operations, same difficulty) is preserved rather than simplified away.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "intellectual-disability-history-pdf",
+      "prompt": "Tenho um resumo de história sobre a Revolução Industrial pra um aluno do 7º ano com deficiência intelectual leve. O texto é denso. Pode simplificar bastante e já gerar um PDF pra eu imprimir e entregar pra ele? Texto: \"A Revolução Industrial foi um processo de profundas transformações econômicas, sociais e tecnológicas que teve início na Inglaterra em meados do século XVIII, caracterizado pela substituição do trabalho artesanal e manufatureiro por processos mecanizados de produção em larga escala, impulsionado principalmente pela invenção e aperfeiçoamento da máquina a vapor, o que resultou no êxodo rural, na formação de uma nova classe operária urbana submetida a condições precárias de trabalho, e no surgimento do sistema capitalista industrial tal como o conhecemos.\"",
+      "expected_output": "A heavily simplified, concrete version of the text (short sentences, repetition of key ideas, concrete examples, minimal abstraction) delivered as an actual PDF file with accessible formatting (sans-serif font, left-aligned, generous spacing) — this eval specifically checks that the skill hands off to the docx/pdf skill to actually produce a file rather than just describing formatting in prose.",
+      "files": []
+    }
+  ]
+}
