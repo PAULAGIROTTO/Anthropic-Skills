@@ -23,6 +23,9 @@ import sqlite3
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from categorize import normalize, load_rules  # noqa: E402
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS transactions (
     txn_hash TEXT PRIMARY KEY,
@@ -37,6 +40,8 @@ CREATE TABLE IF NOT EXISTS transactions (
     category TEXT NOT NULL,
     subcategory TEXT,
     explanation TEXT,
+    matched_rule TEXT,
+    is_fixed INTEGER,
     source_file TEXT,
     imported_at TEXT DEFAULT (datetime('now'))
 );
@@ -52,10 +57,21 @@ CREATE TABLE IF NOT EXISTS imports (
 );
 """
 
+# Columns added after the initial release; ALTER TABLE them in for DBs created
+# by an older version of this skill instead of forcing the user to start over.
+MIGRATIONS = [
+    ("matched_rule", "TEXT"),
+    ("is_fixed", "INTEGER"),
+]
+
 
 def _connect(db_path):
     conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON")
+    existing_cols = {row[1] for row in conn.execute("PRAGMA table_info(transactions)")}
+    for col_name, col_type in MIGRATIONS:
+        if existing_cols and col_name not in existing_cols:
+            conn.execute(f"ALTER TABLE transactions ADD COLUMN {col_name} {col_type}")
     return conn
 
 
@@ -116,17 +132,21 @@ def import_transactions(db_path, transactions, source_file):
         ).hexdigest()[:24]
         date = txn.get("date") or ""
         posted_month = date[:7] if len(date) >= 7 else "unknown"
+        is_fixed = txn.get("is_fixed")
         try:
             conn.execute(
                 """INSERT INTO transactions
                    (txn_hash, account_id, account_kind, date, posted_month, description,
-                    amount, currency, flow, category, subcategory, explanation, source_file)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    amount, currency, flow, category, subcategory, explanation, matched_rule,
+                    is_fixed, source_file)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (
                     dedup_key, txn.get("account_id"), txn.get("account_kind"), date, posted_month,
                     txn.get("description"), txn.get("amount"), txn.get("currency", "BRL"),
                     txn.get("flow"), txn.get("category"), txn.get("subcategory"),
-                    txn.get("explanation"), str(source_file) if source_file else None,
+                    txn.get("explanation"), txn.get("matched_rule"),
+                    None if is_fixed is None else int(bool(is_fixed)),
+                    str(source_file) if source_file else None,
                 ),
             )
             inserted += 1
@@ -169,6 +189,78 @@ def uncategorized(db_path):
     return [{"date": r[0], "description": r[1], "amount": r[2], "account_id": r[3]} for r in rows]
 
 
+def mark_fixed(db_path, rules_path, match_text, is_fixed):
+    """Mark every transaction whose description matches `match_text` (accent- and
+    case-insensitive substring, in either direction) as a fixed or variable
+    expense, and remember it in the rules file so future imports of the same
+    merchant are tagged automatically without asking again.
+
+    This is what backs "avisa a skill que esse gasto e fixo" -- one correction
+    from the user should stick for that merchant going forward, not just for
+    the one transaction they happened to be looking at.
+    """
+    norm_match = normalize(match_text)
+    conn = _connect(db_path)
+    rows = conn.execute("SELECT txn_hash, description, category, subcategory FROM transactions").fetchall()
+
+    matched = [r for r in rows if norm_match in normalize(r[1]) or normalize(r[1]) in norm_match]
+    for txn_hash, _desc, _cat, _sub in matched:
+        conn.execute("UPDATE transactions SET is_fixed = ? WHERE txn_hash = ?", (int(bool(is_fixed)), txn_hash))
+    conn.commit()
+    conn.close()
+
+    rule_action = "not_found_no_rules_path"
+    rule_id = None
+    if rules_path:
+        rules_data = load_rules(rules_path) if Path(rules_path).exists() else {"rules": []}
+        rules_data.setdefault("rules", [])
+
+        target_rule = None
+        for rule in rules_data["rules"]:
+            pattern_norm = normalize(rule["pattern"])
+            if rule.get("type", "contains") != "regex" and (
+                pattern_norm in norm_match or norm_match in pattern_norm
+            ):
+                target_rule = rule
+                break
+
+        if target_rule is not None:
+            target_rule["fixed"] = bool(is_fixed)
+            rule_id = target_rule.get("id", target_rule["pattern"])
+            rule_action = "updated"
+        else:
+            # No existing rule covers this merchant yet -- create one, inheriting
+            # the category the transactions already carry so we don't lose
+            # categorization while adding the fixed/variable flag.
+            inferred_category, inferred_subcategory = "Nao classificado", ""
+            if matched:
+                inferred_category = matched[0][2] or inferred_category
+                inferred_subcategory = matched[0][3] or inferred_subcategory
+            new_id = "user:" + normalize(match_text).lower().replace(" ", "_")[:40]
+            rules_data["rules"].insert(0, {
+                "id": new_id,
+                "pattern": match_text,
+                "type": "contains",
+                "flow": "expense",
+                "category": inferred_category,
+                "subcategory": inferred_subcategory,
+                "note": "",
+                "fixed": bool(is_fixed),
+            })
+            rule_id = new_id
+            rule_action = "created"
+
+        with open(rules_path, "w", encoding="utf-8") as f:
+            json.dump(rules_data, f, ensure_ascii=False, indent=2)
+
+    return {
+        "updated_transactions": len(matched),
+        "is_fixed": bool(is_fixed),
+        "rule_id": rule_id,
+        "rule_action": rule_action,
+    }
+
+
 def recategorize(db_path, txn_hash, category, subcategory, explanation, flow=None):
     conn = _connect(db_path)
     if flow:
@@ -187,11 +279,14 @@ def recategorize(db_path, txn_hash, category, subcategory, explanation, flow=Non
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", choices=["init", "import", "check-import", "summary", "uncategorized"])
+    parser.add_argument("command", choices=["init", "import", "check-import", "summary", "uncategorized", "mark-fixed"])
     parser.add_argument("--db", required=True, help="Path to the SQLite file, e.g. finance-data/finance.db")
     parser.add_argument("--data-dir", help="Directory to seed category_rules.json into (defaults to --db's parent)")
     parser.add_argument("--transactions", help="Path to categorized transactions JSON (for import)")
     parser.add_argument("--source-file", help="Original statement file path, used for import dedup + check-import")
+    parser.add_argument("--rules", help="Path to category_rules.json (for mark-fixed)")
+    parser.add_argument("--match", help="Merchant/description substring to mark, e.g. 'NETFLIX' (for mark-fixed)")
+    parser.add_argument("--fixed", choices=["true", "false"], help="Whether the match is a fixed expense (for mark-fixed)")
     args = parser.parse_args()
 
     data_dir = args.data_dir or str(Path(args.db).parent)
@@ -209,6 +304,10 @@ def main():
         result = monthly_summary(args.db)
     elif args.command == "uncategorized":
         result = uncategorized(args.db)
+    elif args.command == "mark-fixed":
+        if not args.match or args.fixed is None:
+            parser.error("mark-fixed requires --match and --fixed true|false")
+        result = mark_fixed(args.db, args.rules, args.match, args.fixed == "true")
     else:
         parser.error("unknown command")
         return

@@ -61,7 +61,14 @@ def _rule_matches(rule, norm_desc):
 
 
 def categorize_one(txn, rules):
-    """Return (flow, category, subcategory, note, matched_rule_id) for one transaction."""
+    """Return (flow, category, subcategory, note, matched_rule_id, is_fixed) for one transaction.
+
+    is_fixed marks whether this is a recurring, contractually-committed expense
+    (rent, utilities, subscriptions, insurance) versus a variable one (groceries,
+    restaurants, discretionary shopping). It's None ("not yet determined") unless
+    a rule explicitly sets it -- see mark_fixed() in store.py for how the user
+    teaches the skill this per merchant, which is the normal way this gets set.
+    """
     desc = txn.get("description", "")
     norm_desc = normalize(desc)
     amount = txn.get("amount") or 0.0
@@ -79,7 +86,7 @@ def categorize_one(txn, rules):
             return "transfer", "Transferencia interna", "Entre contas proprias", (
                 "Movimentacao entre contas do mesmo titular; excluida dos totais "
                 "de receita e despesa para nao distorcer o dashboard."
-            ), "builtin:internal_transfer"
+            ), "builtin:internal_transfer", None
 
     # 3. Walk user-editable rules in order; first match wins.
     for rule in rules.get("rules", []):
@@ -91,22 +98,23 @@ def categorize_one(txn, rules):
                 rule.get("subcategory", ""),
                 rule.get("note", ""),
                 rule.get("id", rule["pattern"]),
+                rule.get("fixed"),
             )
 
     # 4. No rule matched. Fall back to sign-based flow with an explicit
     #    "unclassified" bucket -- never invent a category with no evidence.
     if forced_flow == "investment":
-        return "investment", "Investimentos", "Nao classificado", "", None
+        return "investment", "Investimentos", "Nao classificado", "", None, None
     if account_kind == "credit_card":
-        return "expense", "Nao classificado", "", "", None
+        return "expense", "Nao classificado", "", "", None, None
     flow = "income" if amount > 0 else "expense"
-    return flow, "Nao classificado", "", "", None
+    return flow, "Nao classificado", "", "", None, None
 
 
 def categorize_all(transactions, rules):
     out = []
     for txn in transactions:
-        flow, category, subcategory, note, rule_id = categorize_one(txn, rules)
+        flow, category, subcategory, note, rule_id, is_fixed = categorize_one(txn, rules)
         enriched = dict(txn)
         enriched.update({
             "flow": flow,
@@ -114,6 +122,7 @@ def categorize_all(transactions, rules):
             "subcategory": subcategory,
             "explanation": note,
             "matched_rule": rule_id,
+            "is_fixed": is_fixed,
             "needs_review": rule_id is None,
         })
         out.append(enriched)

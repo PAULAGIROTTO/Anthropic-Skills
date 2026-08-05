@@ -34,7 +34,7 @@ def fetch_all(db_path):
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
         """SELECT date, posted_month, description, amount, currency, flow,
-                  category, subcategory, explanation, account_id
+                  category, subcategory, explanation, account_id, is_fixed
            FROM transactions ORDER BY date"""
     ).fetchall()
     conn.close()
@@ -43,7 +43,10 @@ def fetch_all(db_path):
 
 def build_aggregates(rows):
     months = sorted({r["posted_month"] for r in rows})
-    monthly_totals = {m: {"income": 0.0, "expense": 0.0, "investment": 0.0} for m in months}
+    monthly_totals = {
+        m: {"income": 0.0, "expense": 0.0, "investment": 0.0, "fixed": 0.0, "variable": 0.0, "unclassified_fixed": 0.0}
+        for m in months
+    }
     category_by_month = {}  # month -> category -> abs total (expenses only)
     category_alltime = {}   # category -> abs total (expenses only)
     investment_by_month_cumulative = {}
@@ -58,11 +61,20 @@ def build_aggregates(rows):
         if flow == "income":
             monthly_totals[m]["income"] += amt
         elif flow == "expense":
-            monthly_totals[m]["expense"] += -amt  # store as positive spend
+            spend = -amt
+            monthly_totals[m]["expense"] += spend  # store as positive spend
             cat = r["category"] or "Nao classificado"
             category_by_month.setdefault(m, {}).setdefault(cat, 0.0)
-            category_by_month[m][cat] += -amt
-            category_alltime[cat] = category_alltime.get(cat, 0.0) + -amt
+            category_by_month[m][cat] += spend
+            category_alltime[cat] = category_alltime.get(cat, 0.0) + spend
+
+            is_fixed = r["is_fixed"]
+            if is_fixed == 1:
+                monthly_totals[m]["fixed"] += spend
+            elif is_fixed == 0:
+                monthly_totals[m]["variable"] += spend
+            else:
+                monthly_totals[m]["unclassified_fixed"] += spend
         elif flow == "investment":
             monthly_totals[m]["investment"] += -amt  # positive = money moved into investments
 
@@ -164,6 +176,11 @@ HTML_TEMPLATE = """<!doctype html>
   </div>
 
   <div class="panel">
+    <h2>Gastos fixos vs variaveis por mes</h2>
+    <div id="fixed-chart"></div>
+  </div>
+
+  <div class="panel">
     <div class="controls">
       <h2 style="margin:0;">Gastos por categoria</h2>
       <select id="month-select"></select>
@@ -223,6 +240,13 @@ if (latest) {
       el("div", {class: "value " + cls}, [fmtBRL(value)]),
     ]));
   });
+  if (t.expense > 0) {
+    const fixedPct = Math.round((t.fixed / t.expense) * 100);
+    kpiRow.appendChild(el("div", {class: "kpi"}, [
+      el("div", {class: "label"}, ["% de gastos fixos"]),
+      el("div", {class: "value"}, [fixedPct + "%"]),
+    ]));
+  }
 } else {
   kpiRow.appendChild(el("div", {class: "kpi"}, [el("div", {class: "label"}, ["Sem dados importados ainda"])]));
 }
@@ -291,6 +315,66 @@ function renderTrendChart() {
   ]));
 }
 renderTrendChart();
+
+// --- fixed vs variable stacked bar chart ---
+function renderFixedChart() {
+  const container = document.getElementById("fixed-chart");
+  if (months.length === 0) { container.textContent = "Importe extratos para ver o historico."; return; }
+  const hasAnyClassified = months.some(m => (DATA.monthly_totals[m].fixed + DATA.monthly_totals[m].variable) > 0);
+  if (!hasAnyClassified) {
+    container.innerHTML = "";
+    container.appendChild(el("p", {style: "color:var(--muted); font-size:0.85rem;"}, [
+      "Nenhuma despesa foi marcada como fixa ou variavel ainda. Peca para marcar um gasto (ex: 'o aluguel e um gasto fixo') e esse grafico passa a mostrar a divisao.",
+    ]));
+    return;
+  }
+  const W = Math.max(600, months.length * 70), H = 220, PAD = 36;
+  const barW = Math.min(40, (W - 2 * PAD) / months.length - 10);
+  const maxTotal = Math.max(...months.map(m => {
+    const t = DATA.monthly_totals[m];
+    return t.fixed + t.variable + t.unclassified_fixed;
+  }), 1);
+  const x = i => PAD + (i * (W - 2 * PAD)) / Math.max(1, months.length - 1) - barW / 2;
+  const scale = v => (v / maxTotal) * (H - 2 * PAD);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", H);
+  const colors = {fixed: "var(--invest)", variable: "#F59F00", unclassified_fixed: "var(--border)"};
+
+  months.forEach((m, i) => {
+    const t = DATA.monthly_totals[m];
+    let yCursor = H - PAD;
+    [["fixed", t.fixed], ["variable", t.variable], ["unclassified_fixed", t.unclassified_fixed]].forEach(([key, val]) => {
+      if (val <= 0) return;
+      const h = scale(val);
+      const rect = document.createElementNS(svg.namespaceURI, "rect");
+      rect.setAttribute("x", x(i)); rect.setAttribute("width", barW);
+      rect.setAttribute("y", yCursor - h); rect.setAttribute("height", h);
+      rect.setAttribute("fill", colors[key]); rect.setAttribute("rx", "2");
+      const title = document.createElementNS(svg.namespaceURI, "title");
+      title.textContent = `${key} ${m}: ${fmtBRL(val)}`;
+      rect.appendChild(title);
+      svg.appendChild(rect);
+      yCursor -= h;
+    });
+    const t2 = document.createElementNS(svg.namespaceURI, "text");
+    t2.setAttribute("x", x(i) + barW / 2); t2.setAttribute("y", H - 8);
+    t2.setAttribute("text-anchor", "middle"); t2.setAttribute("font-size", "10");
+    t2.setAttribute("fill", "var(--muted)");
+    t2.textContent = m;
+    svg.appendChild(t2);
+  });
+  container.innerHTML = "";
+  container.appendChild(svg);
+  container.appendChild(el("div", {class: "legend"}, [
+    el("span", {}, [el("span", {class: "dot", style: "background:var(--invest)"}, []), "Fixos"]),
+    el("span", {}, [el("span", {class: "dot", style: "background:#F59F00"}, []), "Variaveis"]),
+    el("span", {}, [el("span", {class: "dot", style: "background:var(--border)"}, []), "Ainda nao classificado (fixo/variavel)"]),
+  ]));
+}
+renderFixedChart();
 
 // --- month selector + category chart/table ---
 const monthSelect = document.getElementById("month-select");

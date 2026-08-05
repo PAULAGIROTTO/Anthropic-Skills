@@ -22,7 +22,7 @@ re-implementing parsing/storage/aggregation by hand:
 |---|---|
 | `scripts/parse_ofx.py` | Parse OFX 1.x/2.x (any bank) into canonical transactions |
 | `scripts/categorize.py` | Apply the user's local rule file to tag flow/category/subcategory |
-| `scripts/store.py` | Init the local DB, dedup + persist transactions, query summaries |
+| `scripts/store.py` | Init the local DB, dedup + persist transactions, query summaries, mark expenses fixed/variable |
 | `scripts/build_dashboard.py` | Regenerate the offline HTML dashboard from the full DB history |
 
 PDF statements (credit card and some investment/brokerage statements) don't
@@ -151,6 +151,40 @@ This reads the **entire** history in the database, not just what was just
 imported, so old months are automatically still there. Tell the user the
 local file path and that they can open it directly in a browser -- do not
 publish it anywhere.
+
+### Marking an expense as fixed or variable
+
+Beyond category, expenses also carry an independent `is_fixed` flag: fixed
+means a recurring, contractually-committed cost (rent, utilities,
+subscriptions, insurance); variable means it fluctuates or is discretionary
+(groceries, restaurants, shopping). This split is what lets the dashboard
+answer "how much am I actually committed to spending every month, versus
+how much is up to me." The default rules already set this for common,
+unambiguous cases (see `assets/default_category_rules.json`), but plenty of
+transactions are ambiguous until the user says otherwise -- a gym
+membership might be fixed for one person and a pay-per-visit variable cost
+for another.
+
+When the user says something like "o aluguel é um gasto fixo" or "a
+academia não é fixa, eu pago por sessão," don't just edit that one
+transaction -- teach the skill the merchant so every past and future
+transaction from it is tagged consistently:
+
+```bash
+python3 scripts/store.py mark-fixed --db finance-data/finance.db --rules finance-data/category_rules.json --match "ALUGUEL" --fixed true
+```
+
+`--match` is matched the same accent/case-insensitive way categorization
+works, against transaction descriptions already in the database. This
+updates every matching transaction retroactively and also updates (or
+creates) the corresponding rule in `category_rules.json` with a `fixed`
+field, so every future import of that merchant is tagged automatically --
+the user should only ever have to say this once per merchant. Rebuild the
+dashboard afterward so the "Gastos fixos vs variáveis" chart picks up the
+change. Transactions nobody has classified yet show up in the dashboard as
+an explicit "ainda não classificado" slice rather than being guessed into
+fixed or variable -- treat that the same way as "Não classificado" for
+category: an honest unknown beats a wrong guess.
 
 ### Ongoing monthly use
 
