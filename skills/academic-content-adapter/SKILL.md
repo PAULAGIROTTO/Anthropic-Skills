@@ -32,6 +32,29 @@ Apply these regardless of the specific difficulty; §3 layers on profile-specifi
 - One instruction per line/step, numbered. "Read the paragraph, underline the verbs, and write two sentences using them" becomes three separate numbered steps.
 - Put the action verb first and make it unambiguous ("Circle...", "Write...", "Underline...") — avoid stacking two asks in one sentence.
 
+**Exercises and exam questions: keep the question itself up front, not just at the end.** When breaking a word problem or exam question into guided steps, don't let the "how to approach it" steps replace the question — a student flipping straight to the steps loses sight of what they're actually solving for, and a teacher scanning the page needs to find the question fast. State the question first (with its answer blank), then the optional step-by-step guidance under a clear label like "Como abordar essa questão", then restate the question with the answer blank again at the end, right where the student writes in it:
+
+```
+Pergunta: Quantas camisetas restaram no estoque depois dos dois dias de venda?
+
+Resposta: _______________
+
+Como abordar essa questão:
+Passo 1: Some as camisetas vendidas nos dois dias (145 + 98).
+[ ] Fiz o Passo 1.
+
+Passo 2: Subtraia esse total do estoque inicial (500 − total vendido).
+[ ] Fiz o Passo 2.
+
+Pergunta: Quantas camisetas restaram no estoque depois dos dois dias de venda?
+
+Resposta: _______________
+```
+
+The steps are a scaffold to lean on, not a replacement for the student doing the arithmetic — don't compute the answer within a step (e.g. don't write "Passo 1: some 145+98 = 243"), since that does the reasoning for them and defeats the point of preserving the exercise's difficulty.
+
+**Don't rely on markdown syntax for emphasis in worksheet/exam-style content.** Text like this is frequently copied straight into a printed page or another document, where literal `**asterisks**` just show up as clutter instead of rendering as bold. Use structural cues instead — capitalized labels ("Passo 1:", "Pergunta:"), line breaks, indentation, and checkboxes — that read correctly whether or not something renders markdown. (This concern doesn't apply to prose you're only discussing in chat, or to text going into a docx/pdf where real bold formatting is applied by the file itself.)
+
 **Add scaffolding, don't just shrink the text.**
 - A one-line **summary** at the top ("This text is about...") gives the reader a frame before the details.
 - A short **glossary** for any term you kept that's genuinely hard, with a plain-language definition and, where useful, a concrete example.

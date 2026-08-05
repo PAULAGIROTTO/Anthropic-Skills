@@ -67,7 +67,7 @@ Each section covers what tends to help, what to actively avoid, and a short befo
 **Do:**
 - Very short, concrete sentences. Avoid abstraction — ground ideas in examples the student can picture.
 - Heavy repetition of key terms and ideas across the material, rather than stating something once and moving on.
-- Visual supports (simple diagrams, icons next to instructions) alongside text, not as a replacement for it.
+- Visual supports alongside the text, not as a replacement for it — icons or simple markers next to instructions, boxed callouts for key ideas, a glossary box, a summary box. When producing a document (docx/pdf) for this profile, always include these visual supports rather than treating them as optional polish — they carry real comprehension weight for this profile, not just decoration.
 - Slow, explicit step-by-step sequencing, even more granular than the ADHD breakdown above.
 - Reduce the total amount of content per page/session — it's often better to cover less material more thoroughly than to compress everything into one dense adaptation.
 
