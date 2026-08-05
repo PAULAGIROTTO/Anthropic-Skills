@@ -1,0 +1,73 @@
+{
+  "_comment": "Seed rules copied into the user's data directory on first run (see store.py init). Safe to edit freely -- this file never leaves the local machine. Add new rules as you teach the skill new merchants; put the most specific patterns first since the first match wins.",
+  "rules": [
+    { "id": "housing_rent", "pattern": "ALUGUEL", "type": "contains", "flow": "expense", "category": "Moradia", "subcategory": "Aluguel", "note": "Pagamento de aluguel." },
+    { "id": "housing_condo", "pattern": "CONDOMINIO", "type": "contains", "flow": "expense", "category": "Moradia", "subcategory": "Condominio", "note": "Taxa condominial." },
+    { "id": "housing_iptu", "pattern": "IPTU", "type": "contains", "flow": "expense", "category": "Moradia", "subcategory": "IPTU", "note": "Imposto predial e territorial urbano." },
+    { "id": "housing_financing", "pattern": "FINANCIAMENTO IMOB", "type": "contains", "flow": "expense", "category": "Moradia", "subcategory": "Financiamento imobiliario", "note": "" },
+
+    { "id": "utility_energy", "pattern": "(ENEL|CEMIG|CPFL|LIGHT|COPEL|CELESC|ENERGISA|COELBA|ELETROPAULO)", "type": "regex", "flow": "expense", "category": "Contas e utilidades", "subcategory": "Energia eletrica", "note": "Concessionaria de energia eletrica." },
+    { "id": "utility_water", "pattern": "(SABESP|COPASA|CEDAE|EMBASA|CAESB|SANEPAR)", "type": "regex", "flow": "expense", "category": "Contas e utilidades", "subcategory": "Agua e esgoto", "note": "Companhia de saneamento." },
+    { "id": "utility_gas", "pattern": "(COMGAS|NATURGY|CEG GAS)", "type": "regex", "flow": "expense", "category": "Contas e utilidades", "subcategory": "Gas", "note": "" },
+    { "id": "utility_internet", "pattern": "(VIVO FIBRA|CLARO NET|OI FIBRA|TIM LIVE|NET VIRTUA)", "type": "regex", "flow": "expense", "category": "Contas e utilidades", "subcategory": "Internet", "note": "" },
+    { "id": "utility_phone", "pattern": "(VIVO|CLARO|TIM|OI MOVEL|ALGAR)", "type": "regex", "flow": "expense", "category": "Contas e utilidades", "subcategory": "Telefone e celular", "note": "" },
+
+    { "id": "food_delivery_ifood", "pattern": "IFOOD", "type": "contains", "flow": "expense", "category": "Alimentacao", "subcategory": "Delivery", "note": "Aplicativo de entrega de comida (iFood)." },
+    { "id": "food_delivery_rappi", "pattern": "RAPPI", "type": "contains", "flow": "expense", "category": "Alimentacao", "subcategory": "Delivery", "note": "Aplicativo de entrega (Rappi)." },
+    { "id": "food_supermarket", "pattern": "(SUPERMERCADO|MERCADO |CARREFOUR|PAO DE ACUCAR|EXTRA |ASSAI|ATACADAO|DIA SUPERMERCADO)", "type": "regex", "flow": "expense", "category": "Alimentacao", "subcategory": "Supermercado", "note": "" },
+    { "id": "food_restaurant", "pattern": "(RESTAURANTE|CHURRASCARIA|PIZZARIA|SUSHI)", "type": "regex", "flow": "expense", "category": "Alimentacao", "subcategory": "Restaurante", "note": "" },
+    { "id": "food_bakery", "pattern": "(PADARIA|PANIFICADORA)", "type": "regex", "flow": "expense", "category": "Alimentacao", "subcategory": "Padaria", "note": "" },
+    { "id": "food_coffee", "pattern": "(STARBUCKS|CAFETERIA|COFFEE)", "type": "regex", "flow": "expense", "category": "Alimentacao", "subcategory": "Cafe", "note": "" },
+    { "id": "food_fastfood", "pattern": "(MCDONALDS|BURGER KING|SUBWAY|HABIBS|BOB S|OUTBACK)", "type": "regex", "flow": "expense", "category": "Alimentacao", "subcategory": "Lanche e fast food", "note": "" },
+
+    { "id": "transport_fuel", "pattern": "(POSTO |IPIRANGA|SHELL|PETROBRAS|COMBUSTIVEL)", "type": "regex", "flow": "expense", "category": "Transporte", "subcategory": "Combustivel", "note": "" },
+    { "id": "transport_app_uber", "pattern": "UBER", "type": "regex", "flow": "expense", "category": "Transporte", "subcategory": "Transporte por aplicativo", "note": "Corrida de aplicativo (Uber)." },
+    { "id": "transport_app_99", "pattern": "\\b99 ?APP|\\b99POP", "type": "regex", "flow": "expense", "category": "Transporte", "subcategory": "Transporte por aplicativo", "note": "Corrida de aplicativo (99)." },
+    { "id": "transport_toll", "pattern": "(SEM PARAR|CONECTCAR|PEDAGIO|VELOE)", "type": "regex", "flow": "expense", "category": "Transporte", "subcategory": "Pedagio", "note": "" },
+    { "id": "transport_parking", "pattern": "ESTACIONAMENTO", "type": "contains", "flow": "expense", "category": "Transporte", "subcategory": "Estacionamento", "note": "" },
+    { "id": "transport_public", "pattern": "(BILHETE UNICO|METRO |CPTM|BILHETE ONIBUS)", "type": "regex", "flow": "expense", "category": "Transporte", "subcategory": "Transporte publico", "note": "" },
+    { "id": "transport_ipva", "pattern": "IPVA", "type": "contains", "flow": "expense", "category": "Transporte", "subcategory": "IPVA", "note": "" },
+
+    { "id": "health_plan", "pattern": "(UNIMED|AMIL|BRADESCO SAUDE|SULAMERICA|HAPVIDA|NOTREDAME)", "type": "regex", "flow": "expense", "category": "Saude", "subcategory": "Plano de saude", "note": "" },
+    { "id": "health_pharmacy", "pattern": "(DROGARIA|FARMACIA|DROGASIL|RAIA|PACHECO)", "type": "regex", "flow": "expense", "category": "Saude", "subcategory": "Farmacia", "note": "" },
+    { "id": "health_dental", "pattern": "(ODONTO|DENTISTA)", "type": "regex", "flow": "expense", "category": "Saude", "subcategory": "Odontologia", "note": "" },
+    { "id": "health_gym", "pattern": "(SMARTFIT|BLUEFIT|ACADEMIA|BODYTECH)", "type": "regex", "flow": "expense", "category": "Saude", "subcategory": "Academia e fitness", "note": "" },
+
+    { "id": "education_tuition", "pattern": "(FACULDADE|MENSALIDADE ESCOLAR|UNIVERSIDADE|COLEGIO)", "type": "regex", "flow": "expense", "category": "Educacao", "subcategory": "Mensalidade escolar ou faculdade", "note": "" },
+    { "id": "education_courses", "pattern": "(UDEMY|COURSERA|ALURA|HOTMART)", "type": "regex", "flow": "expense", "category": "Educacao", "subcategory": "Cursos online", "note": "" },
+
+    { "id": "leisure_streaming", "pattern": "(NETFLIX|SPOTIFY|DISNEY PLUS|HBO MAX|AMAZON PRIME VIDEO|YOUTUBE PREMIUM|DEEZER)", "type": "regex", "flow": "expense", "category": "Lazer e entretenimento", "subcategory": "Streaming", "note": "Assinatura de streaming de video ou musica." },
+    { "id": "leisure_travel", "pattern": "(LATAM|GOL LINHAS|AZUL LINHAS|DECOLAR|BOOKING.COM|AIRBNB|HOTEL )", "type": "regex", "flow": "expense", "category": "Lazer e entretenimento", "subcategory": "Viagens e hospedagem", "note": "" },
+    { "id": "leisure_cinema", "pattern": "(CINEMARK|CINEPOLIS|INGRESSO)", "type": "regex", "flow": "expense", "category": "Lazer e entretenimento", "subcategory": "Cinema e shows", "note": "" },
+    { "id": "leisure_games", "pattern": "(STEAM|PLAYSTATION NETWORK|XBOX|NINTENDO ESHOP)", "type": "regex", "flow": "expense", "category": "Lazer e entretenimento", "subcategory": "Jogos", "note": "" },
+
+    { "id": "shopping_marketplace", "pattern": "(MERCADO LIVRE|MERCADOLIVRE|AMAZON |MAGAZINE LUIZA|MAGALU|SHOPEE|SHEIN|ALIEXPRESS)", "type": "regex", "flow": "expense", "category": "Compras", "subcategory": "Marketplace e e-commerce", "note": "" },
+    { "id": "shopping_clothing", "pattern": "(RENNER|C&A|RIACHUELO|ZARA|HERING)", "type": "regex", "flow": "expense", "category": "Compras", "subcategory": "Vestuario", "note": "" },
+    { "id": "shopping_electronics", "pattern": "(FAST SHOP|KABUM|CASAS BAHIA|PONTO FRIO)", "type": "regex", "flow": "expense", "category": "Compras", "subcategory": "Eletronicos", "note": "" },
+
+    { "id": "finance_bank_fee", "pattern": "(TARIFA|TAR PACOTE|MANUTENCAO DE CONTA)", "type": "regex", "flow": "expense", "category": "Servicos financeiros", "subcategory": "Tarifas bancarias", "note": "" },
+    { "id": "finance_card_annuity", "pattern": "(ANUIDADE)", "type": "regex", "flow": "expense", "category": "Servicos financeiros", "subcategory": "Anuidade de cartao", "note": "" },
+    { "id": "finance_interest", "pattern": "(JUROS|IOF|MULTA POR ATRASO)", "type": "regex", "flow": "expense", "category": "Servicos financeiros", "subcategory": "Juros e IOF", "note": "" },
+    { "id": "finance_insurance", "pattern": "(SEGURO VIDA|SEGURO RESIDENCIAL|PORTO SEGURO|SULAMERICA SEGUROS)", "type": "regex", "flow": "expense", "category": "Servicos financeiros", "subcategory": "Seguros", "note": "" },
+
+    { "id": "pets_vet", "pattern": "(VETERINARIA|PET VET|CLINICA VET)", "type": "regex", "flow": "expense", "category": "Pets", "subcategory": "Veterinario", "note": "" },
+    { "id": "pets_shop", "pattern": "(PET SHOP|PETZ|COBASI)", "type": "regex", "flow": "expense", "category": "Pets", "subcategory": "Pet shop e racao", "note": "" },
+
+    { "id": "subscriptions_software", "pattern": "(GOOGLE ONE|ICLOUD|MICROSOFT 365|ADOBE|CHATGPT|CLAUDE.AI|OPENAI)", "type": "regex", "flow": "expense", "category": "Assinaturas e softwares", "subcategory": "SaaS e apps", "note": "" },
+
+    { "id": "personal_care_salon", "pattern": "(SALAO DE BELEZA|BARBEARIA|MANICURE)", "type": "regex", "flow": "expense", "category": "Cuidados pessoais", "subcategory": "Salao e barbearia", "note": "" },
+
+    { "id": "income_salary", "pattern": "(SALARIO|FOLHA DE PAGAMENTO|PAGAMENTO SALARIO)", "type": "regex", "flow": "income", "category": "Receita", "subcategory": "Salario", "note": "Remuneracao de trabalho formal (CLT/PJ folha)." },
+    { "id": "income_freelance", "pattern": "(PIX RECEBIDO.*HONORARIOS|NOTA FISCAL SERVICO)", "type": "regex", "flow": "income", "category": "Receita", "subcategory": "Freelance ou autonomo", "note": "" },
+    { "id": "income_dividends", "pattern": "(DIVIDENDO|JCP|JUROS SOBRE CAPITAL)", "type": "regex", "flow": "income", "category": "Receita", "subcategory": "Rendimentos de investimentos", "note": "Dividendos ou juros sobre capital proprio recebidos." },
+    { "id": "income_refund", "pattern": "(ESTORNO|REEMBOLSO)", "type": "regex", "flow": "income", "category": "Receita", "subcategory": "Reembolso ou estorno", "note": "" },
+    { "id": "income_tax_refund", "pattern": "RESTITUICAO.*IMPOSTO DE RENDA", "type": "regex", "flow": "income", "category": "Receita", "subcategory": "Restituicao de imposto de renda", "note": "" },
+
+    { "id": "investment_fixed_income", "pattern": "(TESOURO DIRETO|CDB|LCI|LCA|RENDA FIXA)", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Renda fixa", "note": "" },
+    { "id": "investment_equities", "pattern": "(BUYSTOCK|SELLSTOCK|ACOES|B3 )", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Renda variavel (acoes e FIIs)", "note": "" },
+    { "id": "investment_funds", "pattern": "(BUYMF|SELLMF|FUNDO DE INVESTIMENTO)", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Fundos de investimento", "note": "" },
+    { "id": "investment_pension", "pattern": "(PREVIDENCIA PRIVADA|PGBL|VGBL)", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Previdencia privada", "note": "" },
+    { "id": "investment_crypto", "pattern": "(BITCOIN|CRIPTO|BINANCE|MERCADO BITCOIN)", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Criptoativos", "note": "" },
+    { "id": "investment_savings", "pattern": "(POUPANCA)", "type": "regex", "flow": "investment", "category": "Investimentos", "subcategory": "Poupanca", "note": "" }
+  ]
+}
