@@ -38,16 +38,21 @@
 - **Checking/savings accounts**: negative `TRNAMT` = money out (expense),
   positive = money in (income). This is the OFX standard and holds for
   essentially every bank.
-- **Credit card OFX (`CCSTMTRS`)**: purchases are usually *positive*
-  amounts representing a charge to the card (increasing what you owe),
-  and payments/refunds are negative. This is the opposite convention from
-  a checking account. If a credit card import shows "income" for every
-  purchase and "expenses" for the payment, the sign is flipped -- treat
-  every non-negative amount in a `credit_card` account as an expense
-  before applying category rules, and treat payments to the card
-  (negative, matching "PAGAMENTO" in the description) as a transfer, not
-  income, since it's just moving money you already counted as an expense
-  when it was charged.
+- **Credit card OFX (`CCSTMTRS`)**: the same negative-out/positive-in
+  convention is *supposed* to hold, but some card issuers export purchases
+  as positive amounts (a charge increasing what you owe) and
+  payments/refunds as negative -- the opposite of a checking account.
+  `parse_ofx.py` auto-corrects this using `TRNTYPE` rather than trusting
+  the raw sign: `DEBIT`/`POS` are forced negative (a purchase is always
+  money leaving the account) and `CREDIT` is forced positive (a payment or
+  refund is always money coming back), regardless of what sign the file
+  originally used. This is intentionally narrow -- only those two
+  unambiguous types get corrected, so a checking account file that already
+  has correct signs is left untouched. If you ever see a credit card
+  import where every purchase looks like "income," check `raw_type` in the
+  parsed output; a `TRNTYPE` the corrector doesn't recognize (e.g. a
+  nonstandard value some issuer invented) can still slip through and needs
+  a one-off fix.
 - When in doubt, check the statement's printed total against the sum of
   parsed transactions before importing -- a sign error shows up
   immediately as a wildly wrong total.
@@ -73,9 +78,18 @@ its PDF differently. The reliable approach, using the `pdf` skill's tools
    often than OFX parsing does, and a totals mismatch is the cheapest way
    to catch it before bad data goes into the database.
 4. Credit card PDF statements list purchases as positive numbers (amount
-   charged); treat all of them as expenses. Do not import the "payment
-   received" line as income -- it's a transfer that pays down what was
-   already counted as an expense when the purchase happened.
+   charged). There's no `TRNTYPE` to lean on here like there is for OFX, so
+   when building the canonical transaction JSON, store purchases as
+   **negative** amounts to match the negative-out/positive-in convention
+   the rest of the pipeline assumes (`categorize.py` and
+   `build_dashboard.py` both compute spend as `-amount`) -- don't keep the
+   PDF's own positive-for-a-charge display convention. Do not import the
+   "payment received" line at all as a separate expense or as income; it's
+   the same lump-sum bill payment described in the reconciliation section
+   below, and `categorize.py`'s `CREDIT_CARD_PAYMENT_KEYWORDS` will catch
+   it and tag it as a transfer as long as the description contains
+   recognizable phrasing (add a new keyword if a particular issuer's
+   wording doesn't match anything in the list).
 5. Multi-currency cards (common on Brazilian cards used abroad) sometimes
    print both the foreign-currency amount and the converted local-currency
    amount on the same line -- use the local-currency (settlement) amount
@@ -98,6 +112,45 @@ custódia. For PDF investment statements, extract:
   into the income flow if the statement breaks it out; otherwise keep the
   whole amount in Investimentos and note the ambiguity in the explanation
   field.
+
+## Reconciling checking account and credit card statements
+
+The most common way to accidentally inflate a user's spending: import the
+card's itemized statement (each purchase, correctly categorized) *and* the
+checking account statement that includes the lump-sum payment of that same
+bill, and count both as expenses. That payment isn't new spending -- it's
+just settling debt for spending that was already counted line-by-line on
+the card.
+
+`categorize.py`'s `CREDIT_CARD_PAYMENT_KEYWORDS` handles the common
+phrasing on both sides of this automatically, tagging matches as
+`flow: transfer`, `category: "Transferencia interna"`,
+`subcategory: "Pagamento de fatura de cartao"` (excluded from expense/income
+totals just like an inter-account transfer):
+
+- From the checking account side: "PAGAMENTO CARTAO", "PAGAMENTO DE
+  FATURA", "PGTO FATURA", "PIX FATURA CARTAO," etc.
+- From the card statement's own side (a line that reduces what you owe):
+  "PAGAMENTO RECEBIDO," "OBRIGADO PELO PAGAMENTO," "AUTOMATIC PAYMENT,"
+  "PAYMENT THANK YOU."
+
+If a bank uses phrasing that doesn't match anything in that list, add it --
+the keywords are deliberately specific (pairing "pagamento/pgto" with
+"cartao/fatura", or matching exact bank boilerplate) to avoid accidentally
+sweeping in a legitimate purchase whose description happens to contain
+"pagamento."
+
+**This only produces correct totals if both sides eventually get
+imported.** Excluding the lump-sum payment as a transfer is only right
+*because* the itemized purchases are (or will be) counted separately from
+the card's own statement. If only the checking account side ever gets
+imported, the exclusion makes that spending disappear from the dashboard
+entirely -- silently under-counting instead of double-counting.
+`store.py import` guards against exactly this: it checks whether the
+database has any `credit_card`-kind transactions at all, and if a
+bill-payment transfer was just excluded with none present, returns a
+`warnings` entry saying so. Treat that warning as a to-do, not a footnote --
+ask the user for the corresponding card statement and import it.
 
 ## Multiple accounts, multiple banks
 

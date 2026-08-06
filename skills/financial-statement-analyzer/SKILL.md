@@ -22,7 +22,7 @@ re-implementing parsing/storage/aggregation by hand:
 |---|---|
 | `scripts/parse_ofx.py` | Parse OFX 1.x/2.x (any bank) into canonical transactions |
 | `scripts/categorize.py` | Apply the user's local rule file to tag flow/category/subcategory |
-| `scripts/store.py` | Init the local DB, dedup + persist transactions, query summaries, mark expenses fixed/variable |
+| `scripts/store.py` | Init the local DB, dedup + persist transactions, query summaries, mark expenses fixed/variable, manually set a category |
 | `scripts/build_dashboard.py` | Regenerate the offline HTML dashboard from the full DB history |
 
 PDF statements (credit card and some investment/brokerage statements) don't
@@ -120,15 +120,37 @@ categories) persist and keep improving future imports.
    ```bash
    python3 scripts/categorize.py --rules finance-data/category_rules.json --transactions /tmp/txns.json > /tmp/txns_categorized.json
    ```
-   Review anything with `needs_review: true`. For real merchants you can
-   identify, either recognize them from the description directly or -- per
-   the privacy rules above -- do a *generalized* web search on just the
-   merchant name, then add a new rule to `finance-data/category_rules.json`
-   (see `references/category_taxonomy.md` for the category list and
-   conventions) so future statements auto-categorize it too. Don't force a
-   guess into an existing category just to clear the review queue --
-   leaving something in "Não classificado" with the raw description intact
-   is more useful than a wrong label.
+   Anything with `needs_review: true` needs a human-readable answer to "what
+   is this and where does it belong" before it gets imported as-is. Work
+   through it in this order, and don't stop at step (a) just because it's
+   the cheapest one:
+
+   a. **Recognize it yourself first.** Plenty of unmatched merchants are
+      obvious from the raw description (a slightly different spelling of a
+      chain already in the rules, a CNPJ suffix, an abbreviation) -- no
+      search needed.
+   b. **Research harder before giving up.** If the merchant genuinely isn't
+      recognizable, do a *generalized* web search (per the privacy rules
+      above -- merchant name only, never amounts/dates/account info). Don't
+      settle for one query that comes back empty: try the name as-is, try
+      it without trailing store/location codes, try it alongside "empresa"
+      or "CNPJ" if one is present in the description. The goal is a real
+      answer often enough that "Não classificado" is the exception, not the
+      default landing spot for anything unfamiliar.
+   c. **Ask the user when research still comes up empty or ambiguous.**
+      List the remaining unclear transactions (date, description, amount --
+      `scripts/store.py uncategorized` gives you this list straight from
+      the database for anything already imported) and ask the user to
+      classify them. This is the normal, expected path for one-off local
+      merchants, informal transfers, or anything a web search can't
+      identify -- it is not a fallback to be embarrassed about.
+   d. **Persist whatever you land on** so it never has to be asked again --
+      see "Manually classifying a transaction" below. Never force a guess
+      into an existing category just to clear the review queue: a
+      transaction still sitting in "Não classificado" with its raw
+      description intact is more useful than a confidently wrong label,
+      and the dashboard treats it as an honest, visible bucket rather than
+      hiding it.
 
 4. **Import into the database** (dedups automatically, both at the
    file level and the individual-transaction level via OFX `FITID` or a
@@ -136,6 +158,8 @@ categories) persist and keep improving future imports.
    ```bash
    python3 scripts/store.py import --db finance-data/finance.db --transactions /tmp/txns_categorized.json --source-file path/to/statement.ofx
    ```
+   Check the `warnings` field in the result -- see "Reconciling credit card
+   statements" below for the most common one.
 
 5. Repeat steps 1-4 for every statement file the user has for that period
    (checking account, savings, each credit card, each brokerage) -- they
@@ -186,6 +210,51 @@ an explicit "ainda não classificado" slice rather than being guessed into
 fixed or variable -- treat that the same way as "Não classificado" for
 category: an honest unknown beats a wrong guess.
 
+### Manually classifying a transaction
+
+When automated rules and research (step 3 above) can't resolve a
+transaction, or the user simply disagrees with a category, fix it with
+`set-category` -- it works exactly like `mark-fixed`: one correction
+updates every matching transaction already in the database *and* teaches
+the rule file, so it's genuinely a one-time fix per merchant, not a
+per-transaction chore repeated every month.
+
+```bash
+python3 scripts/store.py set-category --db finance-data/finance.db --rules finance-data/category_rules.json \
+  --match "LOJA DO SEU JOAO" --category "Compras" --subcategory "Armarinho e miudezas" \
+  --explanation "Loja de bairro, confirmado pelo usuario" --flow expense
+```
+
+`--match` uses the same accent/case-insensitive substring matching as
+`mark-fixed`. Omit `--subcategory`/`--explanation` if there's nothing
+useful to add. Use `--flow transfer` for things like a P2P payment to a
+friend that should stay out of the income/expense totals entirely. Rebuild
+the dashboard afterward.
+
+### Reconciling credit card statements with the checking account (avoid double-counting)
+
+A credit card bill payment shows up in *two* places if you're not careful:
+once as the individual purchases on the card's own statement, and again as
+one lump-sum payment on the checking account that pays that bill. Counting
+both would inflate spending by roughly 2x for anyone who pays their card in
+full each month. `categorize.py` already detects common bill-payment
+phrasing (`PAGAMENTO CARTAO`, `PAGAMENTO DE FATURA`, and the card
+statement's own "payment received" line) on either side and tags it as an
+internal transfer, excluded from expense/income totals -- so as long as you
+import **both** the checking account statement and the card's own itemized
+statement for the same period, the math works out with nothing double
+counted and nothing missing.
+
+The failure mode to watch for is importing *only* the checking account
+side: the lump-sum payment gets correctly excluded as a transfer, but if
+the card's itemized statement was never imported, that spending vanishes
+from the dashboard entirely instead of being double-counted -- silently
+wrong in the other direction. `store.py import` catches this for you: when
+a bill-payment transfer is detected and the database has no `credit_card`
+account transactions in it at all yet, the `warnings` field in the import
+result says so explicitly. Always surface that warning to the user and ask
+for the corresponding card statement -- don't just note it and move on.
+
 ### Ongoing monthly use
 
 Once a data directory exists, a typical session is just: user hands over
@@ -201,10 +270,12 @@ carries its own `account_id` (masked to the last 4 digits by default) and
 `account_kind` (checking_or_savings / credit_card / investment), and
 storage dedups per source file and per transaction -- so importing OFX
 files from five different banks plus two credit card PDFs into the same
-`finance.db` is the normal case. See `references/bank_formats.md` for
-sign-convention differences between account types (this matters a lot for
-credit cards, where a positive amount is a *charge*, not income) and for
-credit-card/investment PDF extraction guidance.
+`finance.db` is the normal case. `parse_ofx.py` auto-corrects sign
+convention for OFX files using `TRNTYPE` (some card issuers export
+purchases as positive amounts, which would otherwise silently break the
+expense totals) -- see `references/bank_formats.md` for the details, and
+for how to handle sign correctly when extracting from a PDF, where there's
+no `TRNTYPE` to lean on and it has to be done by hand.
 
 ## Reference files
 

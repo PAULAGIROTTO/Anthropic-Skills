@@ -29,6 +29,23 @@ TRANSFER_KEYWORDS = (
     "mesmo titular", "aplicacao automatica", "resgate automatico",
 )
 
+# Lines that represent paying off (or the card issuer receiving payment for) a
+# credit card bill -- from a checking account statement ("PAGAMENTO CARTAO...")
+# or from inside the card's own statement ("PAGAMENTO RECEBIDO", "AUTOMATIC
+# PAYMENT - THANK YOU"). These must NOT be counted as a second expense: the
+# real spending was already captured line-by-line when the card statement's
+# individual purchases were imported. Counting the lump-sum payment too would
+# double the user's apparent spending. Keep these phrases specific (combining
+# "pagamento/pgto" with "cartao/fatura", or exact bank boilerplate) so a
+# legitimate purchase whose description happens to contain "pagamento" isn't
+# swept in by accident.
+CREDIT_CARD_PAYMENT_KEYWORDS = (
+    "pagamento cartao", "pagamento de fatura", "pagamento fatura cartao",
+    "pgto cartao", "pgto fatura", "pagto fatura", "pagamento cartao de credito",
+    "debito fatura cartao", "pix fatura cartao", "pagamento recebido",
+    "obrigado pelo pagamento", "payment thank you", "automatic payment",
+)
+
 
 def strip_accents(text: str) -> str:
     if not text:
@@ -87,6 +104,19 @@ def categorize_one(txn, rules):
                 "Movimentacao entre contas do mesmo titular; excluida dos totais "
                 "de receita e despesa para nao distorcer o dashboard."
             ), "builtin:internal_transfer", None
+
+    # 2b. Credit card bill payments (from either side: the checking account
+    #    paying it, or the card statement's own "payment received" line) are a
+    #    transfer, not a new expense -- the itemized purchases behind that
+    #    payment should already be counted once, via the card statement import.
+    for kw in CREDIT_CARD_PAYMENT_KEYWORDS:
+        if normalize(kw) in norm_desc:
+            return "transfer", "Transferencia interna", "Pagamento de fatura de cartao", (
+                "Pagamento da fatura do cartao de credito. Os gastos que compoem essa "
+                "fatura ja devem estar (ou precisam ser) importados individualmente a "
+                "partir do extrato/PDF do cartao -- contar este valor tambem como "
+                "despesa duplicaria o gasto."
+            ), "builtin:credit_card_payment", None
 
     # 3. Walk user-editable rules in order; first match wins.
     for rule in rules.get("rules", []):

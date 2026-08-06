@@ -42,6 +42,18 @@ and either teach the skill a new rule or leave it as a one-off. A
 dashboard that's 95% accurately categorized and 5% honestly unclassified
 is trustworthy; one that's 100% categorized but partly wrong isn't.
 
+"Não classificado" is meant to be a short-lived, actively worked-down
+queue, not a permanent bucket. Before accepting it for a transaction: try
+recognizing the merchant directly, then try a generalized web search (see
+`privacy_guidelines.md`) with a couple of different phrasings if the first
+comes back empty, and only after that ask the user to classify it by hand.
+Whatever the answer turns out to be -- researched or user-provided -- use
+`scripts/store.py set-category` to fix it for that merchant permanently
+(retroactively across every past transaction and automatically for every
+future import), the same way `mark-fixed` works for the fixed/variable
+flag. One correction per merchant should be the norm, not one correction
+per transaction.
+
 ## Receita (income flow)
 
 | Category | Typical subcategories |

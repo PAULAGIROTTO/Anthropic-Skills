@@ -91,6 +91,27 @@ def _parse_date(value):
     return f"{y}-{mo}-{d}"
 
 
+# OFX's sign convention is meant to be universal (negative = money out,
+# positive = money in) regardless of account type, but some card issuers
+# export credit card statements with the opposite sign for purchases
+# (positive = charge). TRNTYPE is a more reliable signal than the raw sign
+# in that case: DEBIT/POS unambiguously mean money left the account, CREDIT
+# unambiguously means money came back in (a payment or refund). Only these
+# two unambiguous types are auto-corrected -- types like PAYMENT or XFER are
+# genuinely context-dependent (a bill payment from checking is an outflow,
+# but a payment *received* on a card is an inflow) and get left alone rather
+# than risk flipping a file that was already correct.
+def _normalize_sign(amount, trntype):
+    if amount is None or not trntype:
+        return amount
+    t = trntype.upper()
+    if t in ("DEBIT", "POS") and amount > 0:
+        return -amount
+    if t == "CREDIT" and amount < 0:
+        return -amount
+    return amount
+
+
 def _mask(acct_id, do_mask):
     if not acct_id:
         return acct_id
@@ -135,6 +156,8 @@ def parse_ofx(path, mask_account=True):
             description = " - ".join(p for p in (name, memo) if p) or "(sem descricao)"
             date = _parse_date(_text(trn, "DTPOSTED"))
             fitid = _text(trn, "FITID")
+            raw_type = _text(trn, "TRNTYPE")
+            amount = _normalize_sign(amount, raw_type)
             txn = {
                 "date": date,
                 "description": description,
@@ -144,7 +167,7 @@ def parse_ofx(path, mask_account=True):
                 "account_kind": account_kind,
                 "bank_id": bank_id,
                 "source_txn_id": fitid,
-                "raw_type": _text(trn, "TRNTYPE"),
+                "raw_type": raw_type,
                 "flow_hint": "investment" if account_kind == "investment" else None,
             }
             key = fitid or f"{date}|{amount}|{description}|{account_id}"

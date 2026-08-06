@@ -124,9 +124,12 @@ def import_transactions(db_path, transactions, source_file):
                      "message": f"{source_file} was already imported ({existing[0]} transactions); skipping."}
 
     inserted, duplicates = 0, 0
+    card_payment_total = 0.0
     account_id = None
     for txn in transactions:
         account_id = txn.get("account_id") or account_id
+        if txn.get("matched_rule") == "builtin:credit_card_payment":
+            card_payment_total += abs(txn.get("amount") or 0.0)
         dedup_key = txn.get("dedup_key") or hashlib.sha256(
             f"{txn.get('date')}|{txn.get('amount')}|{txn.get('description')}|{txn.get('account_id')}".encode("utf-8")
         ).hexdigest()[:24]
@@ -158,9 +161,23 @@ def import_transactions(db_path, transactions, source_file):
             "INSERT OR REPLACE INTO imports (file_fingerprint, file_name, account_id, txn_count) VALUES (?,?,?,?)",
             (fp, str(source_file), account_id, inserted),
         )
+
+    warnings = []
+    if card_payment_total > 0:
+        has_card_statement = conn.execute(
+            "SELECT 1 FROM transactions WHERE account_kind = 'credit_card' LIMIT 1"
+        ).fetchone()
+        if not has_card_statement:
+            warnings.append(
+                f"This import excluded ~R$ {card_payment_total:.2f} in credit card bill payment(s) from "
+                "expense totals (treated as a transfer, since the underlying purchases belong on the card's "
+                "own statement). No credit card statement has been imported into this database yet, so those "
+                "purchases currently aren't showing up anywhere -- import the corresponding card statement(s) "
+                "(PDF or OFX) so that spending is captured with real categories."
+            )
     conn.commit()
     conn.close()
-    return {"inserted": inserted, "duplicates": duplicates, "skipped_file": False}
+    return {"inserted": inserted, "duplicates": duplicates, "skipped_file": False, "warnings": warnings}
 
 
 def monthly_summary(db_path):
@@ -183,10 +200,50 @@ def monthly_summary(db_path):
 def uncategorized(db_path):
     conn = _connect(db_path)
     rows = conn.execute(
-        "SELECT date, description, amount, account_id FROM transactions WHERE category = 'Nao classificado' ORDER BY date"
+        """SELECT txn_hash, date, description, amount, account_id, account_kind
+           FROM transactions WHERE category = 'Nao classificado' ORDER BY date"""
     ).fetchall()
     conn.close()
-    return [{"date": r[0], "description": r[1], "amount": r[2], "account_id": r[3]} for r in rows]
+    return [
+        {"txn_hash": r[0], "date": r[1], "description": r[2], "amount": r[3],
+         "account_id": r[4], "account_kind": r[5]}
+        for r in rows
+    ]
+
+
+def _matching_transactions(conn, match_text):
+    norm_match = normalize(match_text)
+    rows = conn.execute("SELECT txn_hash, description, category, subcategory FROM transactions").fetchall()
+    return [r for r in rows if norm_match in normalize(r[1]) or normalize(r[1]) in norm_match]
+
+
+def _find_or_create_rule(rules_data, match_text, fallback_category="Nao classificado", fallback_subcategory=""):
+    """Return (rule_dict, action) where action is 'updated' or 'created'. Mutates
+    rules_data in place -- caller is responsible for writing it back to disk.
+    Matching a rule to a free-text merchant string is necessarily fuzzy (rules
+    use short substrings like "IFOOD", user input might be "ifood" or "o ifood
+    da sexta"), so we match in both directions on the normalized text.
+    """
+    norm_match = normalize(match_text)
+    for rule in rules_data.setdefault("rules", []):
+        pattern_norm = normalize(rule["pattern"])
+        if rule.get("type", "contains") != "regex" and (
+            pattern_norm in norm_match or norm_match in pattern_norm
+        ):
+            return rule, "updated"
+
+    new_id = "user:" + normalize(match_text).lower().replace(" ", "_")[:40]
+    new_rule = {
+        "id": new_id,
+        "pattern": match_text,
+        "type": "contains",
+        "flow": "expense",
+        "category": fallback_category,
+        "subcategory": fallback_subcategory,
+        "note": "",
+    }
+    rules_data["rules"].insert(0, new_rule)
+    return new_rule, "created"
 
 
 def mark_fixed(db_path, rules_path, match_text, is_fixed):
@@ -199,11 +256,8 @@ def mark_fixed(db_path, rules_path, match_text, is_fixed):
     from the user should stick for that merchant going forward, not just for
     the one transaction they happened to be looking at.
     """
-    norm_match = normalize(match_text)
     conn = _connect(db_path)
-    rows = conn.execute("SELECT txn_hash, description, category, subcategory FROM transactions").fetchall()
-
-    matched = [r for r in rows if norm_match in normalize(r[1]) or normalize(r[1]) in norm_match]
+    matched = _matching_transactions(conn, match_text)
     for txn_hash, _desc, _cat, _sub in matched:
         conn.execute("UPDATE transactions SET is_fixed = ? WHERE txn_hash = ?", (int(bool(is_fixed)), txn_hash))
     conn.commit()
@@ -213,43 +267,11 @@ def mark_fixed(db_path, rules_path, match_text, is_fixed):
     rule_id = None
     if rules_path:
         rules_data = load_rules(rules_path) if Path(rules_path).exists() else {"rules": []}
-        rules_data.setdefault("rules", [])
-
-        target_rule = None
-        for rule in rules_data["rules"]:
-            pattern_norm = normalize(rule["pattern"])
-            if rule.get("type", "contains") != "regex" and (
-                pattern_norm in norm_match or norm_match in pattern_norm
-            ):
-                target_rule = rule
-                break
-
-        if target_rule is not None:
-            target_rule["fixed"] = bool(is_fixed)
-            rule_id = target_rule.get("id", target_rule["pattern"])
-            rule_action = "updated"
-        else:
-            # No existing rule covers this merchant yet -- create one, inheriting
-            # the category the transactions already carry so we don't lose
-            # categorization while adding the fixed/variable flag.
-            inferred_category, inferred_subcategory = "Nao classificado", ""
-            if matched:
-                inferred_category = matched[0][2] or inferred_category
-                inferred_subcategory = matched[0][3] or inferred_subcategory
-            new_id = "user:" + normalize(match_text).lower().replace(" ", "_")[:40]
-            rules_data["rules"].insert(0, {
-                "id": new_id,
-                "pattern": match_text,
-                "type": "contains",
-                "flow": "expense",
-                "category": inferred_category,
-                "subcategory": inferred_subcategory,
-                "note": "",
-                "fixed": bool(is_fixed),
-            })
-            rule_id = new_id
-            rule_action = "created"
-
+        inferred_category = matched[0][2] if matched else "Nao classificado"
+        inferred_subcategory = matched[0][3] if matched else ""
+        rule, rule_action = _find_or_create_rule(rules_data, match_text, inferred_category, inferred_subcategory)
+        rule["fixed"] = bool(is_fixed)
+        rule_id = rule.get("id", rule["pattern"])
         with open(rules_path, "w", encoding="utf-8") as f:
             json.dump(rules_data, f, ensure_ascii=False, indent=2)
 
@@ -261,32 +283,71 @@ def mark_fixed(db_path, rules_path, match_text, is_fixed):
     }
 
 
-def recategorize(db_path, txn_hash, category, subcategory, explanation, flow=None):
+def set_category(db_path, rules_path, match_text, category, subcategory="", explanation="", flow="expense", is_fixed=None):
+    """Manually classify every transaction matching `match_text` and remember the
+    merchant -> category mapping in the rules file, the same way mark_fixed()
+    remembers fixed/variable. This is the path for transactions the automatic
+    rules and generalized web research couldn't resolve on their own: the user
+    (or Claude, after researching what the merchant actually is) makes the call
+    once, and it applies retroactively plus to every future import.
+    """
     conn = _connect(db_path)
-    if flow:
-        conn.execute(
-            "UPDATE transactions SET category=?, subcategory=?, explanation=?, flow=? WHERE txn_hash=?",
-            (category, subcategory, explanation, flow, txn_hash),
-        )
+    matched = _matching_transactions(conn, match_text)
+    if is_fixed is None:
+        for txn_hash, _desc, _cat, _sub in matched:
+            conn.execute(
+                "UPDATE transactions SET category=?, subcategory=?, explanation=?, flow=? WHERE txn_hash=?",
+                (category, subcategory, explanation, flow, txn_hash),
+            )
     else:
-        conn.execute(
-            "UPDATE transactions SET category=?, subcategory=?, explanation=? WHERE txn_hash=?",
-            (category, subcategory, explanation, txn_hash),
-        )
+        for txn_hash, _desc, _cat, _sub in matched:
+            conn.execute(
+                "UPDATE transactions SET category=?, subcategory=?, explanation=?, flow=?, is_fixed=? WHERE txn_hash=?",
+                (category, subcategory, explanation, flow, int(bool(is_fixed)), txn_hash),
+            )
     conn.commit()
     conn.close()
+
+    rule_action = "not_found_no_rules_path"
+    rule_id = None
+    if rules_path:
+        rules_data = load_rules(rules_path) if Path(rules_path).exists() else {"rules": []}
+        rule, rule_action = _find_or_create_rule(rules_data, match_text, category, subcategory)
+        rule.update({"category": category, "subcategory": subcategory, "flow": flow})
+        if explanation:
+            rule["note"] = explanation
+        if is_fixed is not None:
+            rule["fixed"] = bool(is_fixed)
+        rule_id = rule.get("id", rule["pattern"])
+        with open(rules_path, "w", encoding="utf-8") as f:
+            json.dump(rules_data, f, ensure_ascii=False, indent=2)
+
+    return {
+        "updated_transactions": len(matched),
+        "category": category,
+        "subcategory": subcategory,
+        "rule_id": rule_id,
+        "rule_action": rule_action,
+    }
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", choices=["init", "import", "check-import", "summary", "uncategorized", "mark-fixed"])
+    parser.add_argument("command", choices=[
+        "init", "import", "check-import", "summary", "uncategorized", "mark-fixed", "set-category",
+    ])
     parser.add_argument("--db", required=True, help="Path to the SQLite file, e.g. finance-data/finance.db")
     parser.add_argument("--data-dir", help="Directory to seed category_rules.json into (defaults to --db's parent)")
     parser.add_argument("--transactions", help="Path to categorized transactions JSON (for import)")
     parser.add_argument("--source-file", help="Original statement file path, used for import dedup + check-import")
-    parser.add_argument("--rules", help="Path to category_rules.json (for mark-fixed)")
-    parser.add_argument("--match", help="Merchant/description substring to mark, e.g. 'NETFLIX' (for mark-fixed)")
-    parser.add_argument("--fixed", choices=["true", "false"], help="Whether the match is a fixed expense (for mark-fixed)")
+    parser.add_argument("--rules", help="Path to category_rules.json (for mark-fixed / set-category)")
+    parser.add_argument("--match", help="Merchant/description substring to target, e.g. 'NETFLIX' (for mark-fixed / set-category)")
+    parser.add_argument("--fixed", choices=["true", "false"], help="Whether the match is a fixed expense (for mark-fixed / optionally set-category)")
+    parser.add_argument("--category", help="Category to assign, e.g. 'Alimentacao' (for set-category)")
+    parser.add_argument("--subcategory", default="", help="Subcategory to assign, e.g. 'Delivery' (for set-category)")
+    parser.add_argument("--flow", default="expense", choices=["expense", "income", "investment", "transfer"],
+                         help="Flow to assign (for set-category, default expense)")
+    parser.add_argument("--explanation", default="", help="Short explanation of what the merchant/transaction is (for set-category)")
     args = parser.parse_args()
 
     data_dir = args.data_dir or str(Path(args.db).parent)
@@ -308,6 +369,12 @@ def main():
         if not args.match or args.fixed is None:
             parser.error("mark-fixed requires --match and --fixed true|false")
         result = mark_fixed(args.db, args.rules, args.match, args.fixed == "true")
+    elif args.command == "set-category":
+        if not args.match or not args.category:
+            parser.error("set-category requires --match and --category")
+        is_fixed = None if args.fixed is None else (args.fixed == "true")
+        result = set_category(args.db, args.rules, args.match, args.category, args.subcategory,
+                               args.explanation, args.flow, is_fixed)
     else:
         parser.error("unknown command")
         return
