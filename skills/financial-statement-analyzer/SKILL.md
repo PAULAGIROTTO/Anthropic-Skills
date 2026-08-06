@@ -24,6 +24,7 @@ re-implementing parsing/storage/aggregation by hand:
 | `scripts/categorize.py` | Apply the user's local rule file to tag flow/category/subcategory |
 | `scripts/store.py` | Init the local DB, dedup + persist transactions, query summaries, mark expenses fixed/variable, manually set a category |
 | `scripts/build_dashboard.py` | Regenerate the offline HTML dashboard from the full DB history |
+| `scripts/apply_recategorizations.py` | Batch-apply the edits the user staged in the dashboard's category drill-down |
 
 PDF statements (credit card and some investment/brokerage statements) don't
 have one universal parser -- use the `pdf` skill's tools (`pypdf`,
@@ -230,6 +231,39 @@ python3 scripts/store.py set-category --db finance-data/finance.db --rules finan
 useful to add. Use `--flow transfer` for things like a P2P payment to a
 friend that should stay out of the income/expense totals entirely. Rebuild
 the dashboard afterward.
+
+### Recategorizing from the dashboard itself
+
+The "Detalhamento por categoria" table in `dashboard.html` is clickable:
+clicking a category row expands it into the individual transactions behind
+that total (for whatever period the month selector above it is currently
+showing), each with an inline form to change its category/subcategory.
+This is the main way a user reviews their own spending and fixes anything
+wrong without going through Claude line-by-line.
+
+The dashboard is still the same static, offline file described in the
+privacy rules above -- it has no server and no write access to
+`finance.db`, on purpose. So recategorizing there doesn't edit the database
+directly: each edit gets staged client-side (the row highlights and a
+floating panel in the corner counts pending changes), and a "Baixar
+alteracoes" button downloads a `recategorizations.json` file (usually to
+the user's Downloads folder) instead of writing anything itself. Each
+staged edit defaults to merchant-wide scope (a checkbox lets the user
+narrow it to just that one transaction, for a genuine one-off), which maps
+directly onto `set_category()`'s two modes.
+
+When the user comes back and says something like "corrigi umas categorias
+no dashboard, aplica," find that file and run:
+
+```bash
+python3 scripts/apply_recategorizations.py --db finance-data/finance.db --rules finance-data/category_rules.json --file ~/Downloads/recategorizations.json
+```
+
+then rebuild the dashboard so it reflects the changes. This closes the
+loop without ever needing a local server or write access from the browser
+-- the download-then-apply round trip is the entire mechanism, and it's
+worth explaining to the user in those terms if they ask why the dashboard
+doesn't just save changes immediately.
 
 ### Reconciling credit card statements with the checking account (avoid double-counting)
 
