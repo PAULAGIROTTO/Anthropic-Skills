@@ -22,6 +22,10 @@ Non-fiction books mix three kinds of content, and readers trust a book more, not
 
 Blurring these — stating a framework as if it were proven fact — is a common way AI-written content ends up sounding authoritative about things that are actually just organizing devices.
 
+## When several sources agree but none is authoritative
+
+A common middle case: no single citable study exists, but several independent, reasonably credible sources (bank/fintech blogs, industry publications, practitioner content) converge on the same range or recommendation — e.g., "keep a 6-12 month emergency fund." This is stronger than one source's opinion but weaker than a peer-reviewed finding, and the book should say so plainly rather than either citing it as scientific fact or dropping it: name it as an **industry convention** or **common recommendation across [type of source]**, not as a single attributed study. That phrasing is itself the citation — it tells the reader exactly how much weight to put on the claim.
+
 ## Handling numbers and statistics specifically
 
 - Prefer ranges and attributed sources over precise-sounding unsourced numbers ("estimates suggest 60-70%, according to [source]" beats a bare "68%").

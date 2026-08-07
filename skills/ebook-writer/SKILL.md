@@ -23,6 +23,8 @@ Before writing anything, get clear on:
 
 Don't turn this into a rigid questionnaire — if the user's initial request already answers most of these, just confirm and move on. Only dig deeper where there's a real gap.
 
+If the user wants to move straight to drafting without closing every gap (e.g., "just assume it, get started"), that's their call — proceed, but state the assumptions you're making explicitly (in your reply, not buried in the manuscript) so they're easy to correct later, and still ask about anything that would be expensive to get wrong later, like the goal/CTA (Stage 1.3) or whether they have existing material to draw from (Stage 1.5).
+
 ## Stage 2: Research and fact-check
 
 This is what separates a trustworthy book from generic AI filler, so don't shortcut it. Read `references/research-and-factchecking.md` before this stage — it covers how to source claims, when to hedge vs. state plainly, and how to handle numbers/statistics (the single biggest source of embarrassing errors in AI-written non-fiction).
@@ -38,7 +40,7 @@ A 30-35 page book needs a spine before it needs prose. Propose:
 - **Introduction** that hooks the reader in the first few sentences (see `references/engagement-techniques.md`) and sets expectations for what the book delivers
 - **Conclusion**, and — only if the goal calls for it (Stage 1) — a closing call-to-action
 
-**Do the length math out loud before writing, and share it with the user:**
+**Do the length math out loud before writing, and share it with the user.** The box below is a worked example with one possible chapter count — recompute it for whatever chapter count your outline actually needs, don't copy these numbers unchanged:
 
 ```
 Target: 30-35 pages x ~275 words/page ≈ 8,250-9,625 words of body content
