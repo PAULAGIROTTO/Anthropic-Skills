@@ -1,0 +1,23 @@
+{
+  "skill_name": "ebook-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quero escrever um ebook para autônomos e freelancers brasileiros sobre como organizar as finanças pessoais e do trabalho quando a renda é variável de mês pra mês. Público: gente que trabalha por conta própria (designers, consultores, etc), 25-45 anos, que já ouviu falar de reserva de emergência mas nunca conseguiu manter uma. Quero algo prático, não um livro teórico de finanças. Pode ser em português mesmo.",
+      "expected_output": "Claude should ask a few clarifying questions if needed (or confirm the brief is enough), then propose a title and an 8-12 chapter outline with the word-count math shown, in Portuguese, before drafting full chapters. Content should focus on practical, concrete advice for variable-income freelancers, avoid invented statistics, and flag anything that needs a real source. Should mention handing off to the docx or pdf skill for final formatting.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet. Topic: how B2B SaaS companies can reduce time-to-value for new users. I have a bunch of blog posts and a Notion doc with our internal onboarding playbook I can paste in. Should be professional but not boring to read.",
+      "expected_output": "Claude should ask for the user's existing material (blog posts / playbook) before researching from scratch, confirm audience/goal (lead magnet), and propose an outline sized to 30-35 pages with the word budget shown. Chapters should read as engaging (hooks, examples) while claims sourced either from the user's material or flagged as needing a check. Should not fabricate SaaS statistics.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "me ajuda a criar um e-book curto sobre os benefícios comprovados da meditação para ansiedade, quero citar estudos científicos reais porque vou vender esse material",
+      "expected_output": "Because this is being sold and claims 'comprovados' (proven) benefits backed by real studies, Claude should treat Stage 2 (research and fact-checking) as essential, actually search for real sources rather than recalling study names/numbers from memory, and clearly flag any claim it could not verify rather than inventing a citation. Should still apply engagement techniques without exaggerating the science.",
+      "files": []
+    }
+  ]
+}

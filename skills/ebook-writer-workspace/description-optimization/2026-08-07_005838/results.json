@@ -1,0 +1,1390 @@
+{
+  "exit_reason": "max_iterations (5)",
+  "original_description": "Use this skill whenever the user wants to write, draft, plan, or outline an ebook, e-book, digital book, guide, or short non-fiction book \u2014 including Portuguese requests like 'escrever um ebook', 'criar um e-book', 'montar um livro digital', or 'quero lan\u00e7ar um infoproduto em formato de livro'. Trigger even when the user only describes a topic and says they want to turn it into a book, guide, or downloadable PDF/Word product, without using the word 'ebook' explicitly. This skill guides the full pipeline: defining topic/audience, researching and fact-checking real, verifiable content, building a length-correct outline (default 30-35 pages, ~8,000-10,000 words), writing chapters using storytelling and engagement techniques that keep readers turning pages, checking readability, and handing off to the docx or pdf skill for final formatted delivery. Do not use this skill for short single-page content like blog posts, emails, or social media copy \u2014 use it for book-length, multi-chapter deliverables.",
+  "best_description": "Use this skill when someone wants a nonfiction digital book or guide meant to be read start to finish \u2014 ebook, e-book, digital book, livro digital, guia digital, infoproduto, workbook, lead magnet, or a bonus/gift for clients or patients \u2014 no matter the length (a 10-page bonus counts as much as a 35-page guide) and even if they never say \"ebook\" or \"chapters.\" Trigger on: \"write/outline a book or guide about X,\" \"turn our best practices into an ebook for prospects,\" \"quero lan\u00e7ar um infoproduto pra vender no Hotmart,\" \"escrever um livro digital pra dar de b\u00f4nus,\" \"livro curto pra captar leads,\" or any topic the user wants turned into a downloadable book/guide. Covers topic/audience definition, fact-checked research, outlining, chapter-by-chapter drafting, and readability review, then hands off to docx/pdf for formatting. The test is shape, not length or price: if it wants chapters, an outline, or a cover-to-cover read, use this. Skip only single free-standing pieces \u2014 one blog post, email, social caption, slide deck, whitepaper, or one-page flyer.",
+  "best_score": "5/8",
+  "best_train_score": "6/12",
+  "best_test_score": "5/8",
+  "final_description": "Use this skill when someone wants a nonfiction digital book or guide meant to be read start to finish \u2014 ebook, e-book, digital book, livro digital, guia digital, infoproduto, workbook, lead magnet, or a bonus/gift for clients or patients \u2014 no matter the length (a 10-page bonus counts as much as a 35-page guide) and even if they never say \"ebook\" or \"chapters.\" Trigger on: \"write/outline a book or guide about X,\" \"turn our best practices into an ebook for prospects,\" \"quero lan\u00e7ar um infoproduto pra vender no Hotmart,\" \"escrever um livro digital pra dar de b\u00f4nus,\" \"livro curto pra captar leads,\" or any topic the user wants turned into a downloadable book/guide. Covers topic/audience definition, fact-checked research, outlining, chapter-by-chapter drafting, and readability review, then hands off to docx/pdf for formatting. The test is shape, not length or price: if it wants chapters, an outline, or a cover-to-cover read, use this. Skip only single free-standing pieces \u2014 one blog post, email, social caption, slide deck, whitepaper, or one-page flyer.",
+  "iterations_run": 5,
+  "holdout": 0.4,
+  "train_size": 12,
+  "test_size": 8,
+  "history": [
+    {
+      "iteration": 1,
+      "description": "Use this skill whenever the user wants to write, draft, plan, or outline an ebook, e-book, digital book, guide, or short non-fiction book \u2014 including Portuguese requests like 'escrever um ebook', 'criar um e-book', 'montar um livro digital', or 'quero lan\u00e7ar um infoproduto em formato de livro'. Trigger even when the user only describes a topic and says they want to turn it into a book, guide, or downloadable PDF/Word product, without using the word 'ebook' explicitly. This skill guides the full pipeline: defining topic/audience, researching and fact-checking real, verifiable content, building a length-correct outline (default 30-35 pages, ~8,000-10,000 words), writing chapters using storytelling and engagement techniques that keep readers turning pages, checking readability, and handing off to the docx or pdf skill for final formatted delivery. Do not use this skill for short single-page content like blog posts, emails, or social media copy \u2014 use it for book-length, multi-chapter deliverables.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "cria um e-book pra mim sobre receitas veganas r\u00e1pidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda n\u00e3o sei bem como organizar em cap\u00edtulos",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I want to write a longer handbook for new hires at my startup \u2014 more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "monta uma planilha pra eu controlar quanto cada cliente me paga por m\u00eas, quero colunas de valor, data e status de pagamento",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "preciso escrever um post pro instagram sobre organiza\u00e7\u00e3o financeira pra aut\u00f4nomos, tipo um carrossel de 5 slides",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "description": "Use this skill when the user wants to write, plan, or outline a nonfiction ebook, digital guide, lead magnet, or infoproduct \u2014 any multi-chapter written work meant to be read start to finish, even if never called \"ebook\": \"livro digital\", \"guia digital\", \"infoproduto\", a \"short book\" for bonus/giveaway/lead-magnet use, or just \"book\"/\"guide\" with chapters, intro, and conclusion. Covers Portuguese like \"escrever um ebook\", \"livro digital curto\", \"guia pra vender no Hotmart\", \"material pra captar leads\", \"dar de b\u00f4nus pros clientes\", and English like \"lead magnet\", \"give away to prospects\", \"structured like a proper book with chapters\". Triggers regardless of length (a 10-page bonus guide counts, not just 30-35 pages), price, or platform. Covers topic/audience definition, fact-checked research, outlining, chapter-by-chapter drafting with engagement techniques, and readability review, then hands off to docx/pdf for formatting. Do NOT use for a single standalone piece with no chapters \u2014 one blog post, email, social caption, or one-page flyer.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "cria um e-book pra mim sobre receitas veganas r\u00e1pidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda n\u00e3o sei bem como organizar em cap\u00edtulos",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I want to write a longer handbook for new hires at my startup \u2014 more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "monta uma planilha pra eu controlar quanto cada cliente me paga por m\u00eas, quero colunas de valor, data e status de pagamento",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "preciso escrever um post pro instagram sobre organiza\u00e7\u00e3o financeira pra aut\u00f4nomos, tipo um carrossel de 5 slides",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "description": "Use this skill whenever the user wants to write, draft, plan, or outline a nonfiction ebook, digital guide, infoproduct, or lead magnet \u2014 any downloadable, multi-page written piece meant to be read start to finish, whatever they call it: ebook, e-book, livro digital, guia digital, infoproduto, workbook, a b\u00f4nus/gift for clients or patients, or lead-capture material to sell on Hotmart/Kindle/Gumroad or give away on a website. Trigger even without the word \"ebook\" \u2014 just \"book,\" \"guide,\" or \"material,\" no explicit mention of chapters, or only a topic plus wanting it \"turned into a short book to give away\" or \"to capture leads.\" Applies regardless of length (a 10-page bonus counts), price, or platform. Covers topic/audience definition, research, outlining, chapter drafting, and readability review, then hands off to docx/pdf for formatting. Do NOT use for a single standalone piece: one blog post, email, social caption, slide deck, whitepaper, or one-page flyer.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "cria um e-book pra mim sobre receitas veganas r\u00e1pidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda n\u00e3o sei bem como organizar em cap\u00edtulos",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I want to write a longer handbook for new hires at my startup \u2014 more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "monta uma planilha pra eu controlar quanto cada cliente me paga por m\u00eas, quero colunas de valor, data e status de pagamento",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "preciso escrever um post pro instagram sobre organiza\u00e7\u00e3o financeira pra aut\u00f4nomos, tipo um carrossel de 5 slides",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "description": "Use this skill for any request to write a multi-chapter nonfiction piece meant to be read cover-to-cover and delivered as a downloadable file \u2014 regardless of what the user calls it: ebook, e-book, digital book, guide, livro digital, guia digital, infoproduto, workbook. Trigger even without the word \"ebook\": a business wanting a lead magnet for prospects; a coach, therapist, or consultant wanting a bonus/gift for clients or patients; someone planning an infoproduct to sell on Hotmart, Kindle, or Gumroad; or simply \"help me write/outline a book/guide about [topic]\" with no mention of chapters. Works in English and Portuguese, at any length or price point \u2014 a 10-page bonus counts as much as a 35-page guide. Handles the writing itself (topic/audience definition, research, outlining, chapter drafting, readability review), then hands off final formatting to the docx/pdf skills. Do not use for a single short piece: one blog post, email, social caption, slide deck, whitepaper, or one-page flyer.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "cria um e-book pra mim sobre receitas veganas r\u00e1pidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda n\u00e3o sei bem como organizar em cap\u00edtulos",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I want to write a longer handbook for new hires at my startup \u2014 more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "monta uma planilha pra eu controlar quanto cada cliente me paga por m\u00eas, quero colunas de valor, data e status de pagamento",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "preciso escrever um post pro instagram sobre organiza\u00e7\u00e3o financeira pra aut\u00f4nomos, tipo um carrossel de 5 slides",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "description": "Use this skill when someone wants a nonfiction digital book or guide meant to be read start to finish \u2014 ebook, e-book, digital book, livro digital, guia digital, infoproduto, workbook, lead magnet, or a bonus/gift for clients or patients \u2014 no matter the length (a 10-page bonus counts as much as a 35-page guide) and even if they never say \"ebook\" or \"chapters.\" Trigger on: \"write/outline a book or guide about X,\" \"turn our best practices into an ebook for prospects,\" \"quero lan\u00e7ar um infoproduto pra vender no Hotmart,\" \"escrever um livro digital pra dar de b\u00f4nus,\" \"livro curto pra captar leads,\" or any topic the user wants turned into a downloadable book/guide. Covers topic/audience definition, fact-checked research, outlining, chapter-by-chapter drafting, and readability review, then hands off to docx/pdf for formatting. The test is shape, not length or price: if it wants chapters, an outline, or a cover-to-cover read, use this. Skip only single free-standing pieces \u2014 one blog post, email, social caption, slide deck, whitepaper, or one-page flyer.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 5,
+      "test_failed": 3,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course",
+          "should_trigger": true,
+          "trigger_rate": 0.6666666666666666,
+          "triggers": 2,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "cria um e-book pra mim sobre receitas veganas r\u00e1pidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda n\u00e3o sei bem como organizar em cap\u00edtulos",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I want to write a longer handbook for new hires at my startup \u2014 more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "monta uma planilha pra eu controlar quanto cada cliente me paga por m\u00eas, quero colunas de valor, data e status de pagamento",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "preciso escrever um post pro instagram sobre organiza\u00e7\u00e3o financeira pra aut\u00f4nomos, tipo um carrossel de 5 slides",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "preciso escrever um livro curto sobre educa\u00e7\u00e3o financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago",
+          "should_trigger": true,
+          "trigger_rate": 0.3333333333333333,
+          "triggers": 1,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "sou terapeuta e quero escrever um livro digital curto pra dar de b\u00f4nus pros meus pacientes, sobre t\u00e9cnicas simples de respira\u00e7\u00e3o pra ansiedade, algo f\u00e1cil de entender e que prenda a aten\u00e7\u00e3o",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "quero lan\u00e7ar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "Quero escrever um ebook para aut\u00f4nomos e freelancers brasileiros sobre como organizar as finan\u00e7as pessoais quando a renda \u00e9 vari\u00e1vel de m\u00eas pra m\u00eas. Precisa ter uns 30-35 p\u00e1ginas.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "resume esse pdf de 200 p\u00e1ginas do relat\u00f3rio da empresa pra eu entender r\u00e1pido os pontos principais antes da reuni\u00e3o",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "quero criar uma apresenta\u00e7\u00e3o de slides pra um pitch de investidores sobre o livro que estou lan\u00e7ando, preciso de uns 10 slides com os n\u00fameros de vendas e o p\u00fablico-alvo",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    }
+  ]
+}
