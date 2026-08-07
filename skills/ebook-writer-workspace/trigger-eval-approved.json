@@ -1,0 +1,22 @@
+[
+  {"query": "Quero escrever um ebook para autônomos e freelancers brasileiros sobre como organizar as finanças pessoais quando a renda é variável de mês pra mês. Precisa ter uns 30-35 páginas.", "should_trigger": true},
+  {"query": "I run a small SaaS company and want to turn our onboarding best-practices into a short ebook we can give away to prospects as a lead magnet.", "should_trigger": true},
+  {"query": "queria pegar uns 15 posts do meu blog sobre maternidade e transformar isso num livro digital pra vender no meu site, ainda não sei bem como organizar em capítulos", "should_trigger": true},
+  {"query": "I have about 40 pages of notes from a course I taught on public speaking and want to turn it into a short book people can download after buying my course", "should_trigger": true},
+  {"query": "quero lançar um infoproduto, tipo um guia digital pra vender no Hotmart sobre como montar horta em apartamento pequeno, umas 30 paginas", "should_trigger": true},
+  {"query": "Can you help me outline and write a nonfiction book about remote team management? I want it structured like a proper book with an intro, chapters, and a conclusion, not just a listicle.", "should_trigger": true},
+  {"query": "preciso escrever um livro curto sobre educação financeira pra distribuir gratuitamente no meu site e captar leads pro meu curso pago", "should_trigger": true},
+  {"query": "cria um e-book pra mim sobre receitas veganas rápidas pro dia a dia, uns 30 paginas, quero botar no ar essa semana", "should_trigger": true},
+  {"query": "I want to write a longer handbook for new hires at my startup — more like a mini-book with chapters they'd actually read cover to cover, not just another onboarding doc", "should_trigger": true},
+  {"query": "sou terapeuta e quero escrever um livro digital curto pra dar de bônus pros meus pacientes, sobre técnicas simples de respiração pra ansiedade, algo fácil de entender e que prenda a atenção", "should_trigger": true},
+  {"query": "can you extract the text from this PDF annual report so I can quote a couple of numbers in an email to my boss?", "should_trigger": false},
+  {"query": "write a blog post about productivity tips for remote workers, around 800 words, casual tone", "should_trigger": false},
+  {"query": "draft a proposal doc for my manager about migrating our infra from Heroku to Kubernetes, needs background, tradeoffs, and a recommendation", "should_trigger": false},
+  {"query": "preciso escrever um post pro instagram sobre organização financeira pra autônomos, tipo um carrossel de 5 slides", "should_trigger": false},
+  {"query": "I have a .docx file of my dissertation and just need help fixing the formatting and adding a proper table of contents, the content is already final", "should_trigger": false},
+  {"query": "monta uma planilha pra eu controlar quanto cada cliente me paga por mês, quero colunas de valor, data e status de pagamento", "should_trigger": false},
+  {"query": "Can you write a 5-page whitepaper on our new API for enterprise customers? Needs to be short and technical, going out with a sales deck next week.", "should_trigger": false},
+  {"query": "resume esse pdf de 200 páginas do relatório da empresa pra eu entender rápido os pontos principais antes da reunião", "should_trigger": false},
+  {"query": "help me write email newsletter content for our SaaS onboarding tips, want to send one email a week for the next 2 months", "should_trigger": false},
+  {"query": "quero criar uma apresentação de slides pra um pitch de investidores sobre o livro que estou lançando, preciso de uns 10 slides com os números de vendas e o público-alvo", "should_trigger": false}
+]

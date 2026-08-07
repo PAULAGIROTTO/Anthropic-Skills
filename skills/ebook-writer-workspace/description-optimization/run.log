@@ -1,0 +1,6 @@
+Split: 12 train, 8 test (holdout=0.4)
+
+============================================================
+Iteration 1/5
+Description: Use this skill whenever the user wants to write, draft, plan, or outline an ebook, e-book, digital book, guide, or short non-fiction book — including Portuguese requests like 'escrever um ebook', 'criar um e-book', 'montar um livro digital', or 'quero lançar um infoproduto em formato de livro'. Trigger even when the user only describes a topic and says they want to turn it into a book, guide, or downloadable PDF/Word product, without using the word 'ebook' explicitly. This skill guides the full pipeline: defining topic/audience, researching and fact-checking real, verifiable content, building a length-correct outline (default 30-35 pages, ~8,000-10,000 words), writing chapters using storytelling and engagement techniques that keep readers turning pages, checking readability, and handing off to the docx or pdf skill for final formatted delivery. Do not use this skill for short single-page content like blog posts, emails, or social media copy — use it for book-length, multi-chapter deliverables.
+============================================================
