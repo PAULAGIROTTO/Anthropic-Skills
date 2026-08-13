@@ -50,6 +50,15 @@
       "skills": [
         "./skills/claude-api"
       ]
+    },
+    {
+      "name": "neurofisiologia-skills",
+      "description": "Skills for hospital Clinical Neurophysiology services (aEEG, VEEG, cEEG, EEG) covering data visualization/operations analytics and dashboard reporting",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/neurofisiologia-dataviz"
+      ]
     }
   ]
 }

@@ -1,0 +1,41 @@
+id_paciente	unidade	diagnostico_principal	risco_neurologico
+P001	ambulatorio	Encefalopatia	alto
+P002	enfermaria	Encefalopatia	baixo
+P003	ambulatorio	Encefalopatia	alto
+P004	ambulatorio	Encefalopatia	moderado
+P005	UTI	Encefalopatia	baixo
+P006	UTI	Suspeita de crise	baixo
+P007	ambulatorio	Encefalopatia	alto
+P008	ambulatorio	Suspeita de crise	baixo
+P009	enfermaria	Suspeita de crise	baixo
+P010	UTI	Suspeita de crise	moderado
+P011	enfermaria	Encefalopatia	moderado
+P012	UTI	Encefalopatia	baixo
+P013	enfermaria	Suspeita de crise	alto
+P014	enfermaria	Suspeita de crise	alto
+P015	enfermaria	Suspeita de crise	moderado
+P016	UTI	Suspeita de crise	alto
+P017	ambulatorio	Suspeita de crise	moderado
+P018	ambulatorio	Encefalopatia	baixo
+P019	UTI	Suspeita de crise	moderado
+P020	UTI	Suspeita de crise	baixo
+P021	enfermaria	Encefalopatia	alto
+P022	enfermaria	Encefalopatia	moderado
+P023	UTI	Suspeita de crise	alto
+P024	ambulatorio	Suspeita de crise	alto
+P025	ambulatorio	Encefalopatia	alto
+P026	UTI	Encefalopatia	moderado
+P027	enfermaria	Suspeita de crise	alto
+P028	ambulatorio	Suspeita de crise	alto
+P029	enfermaria	Suspeita de crise	baixo
+P030	UTI	Suspeita de crise	moderado
+P031	enfermaria	Encefalopatia	baixo
+P032	ambulatorio	Suspeita de crise	moderado
+P033	UTI	Suspeita de crise	moderado
+P034	ambulatorio	Suspeita de crise	moderado
+P035	UTI	Encefalopatia	alto
+P036	ambulatorio	Encefalopatia	alto
+P037	enfermaria	Suspeita de crise	moderado
+P038	enfermaria	Encefalopatia	baixo
+P039	ambulatorio	Suspeita de crise	baixo
+P040	UTI	Encefalopatia	baixo

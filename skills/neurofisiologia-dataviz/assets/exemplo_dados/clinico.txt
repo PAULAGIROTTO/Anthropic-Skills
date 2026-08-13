@@ -1,0 +1,121 @@
+exame_id	presenca_crises	numero_crises	tipo_crise	padrao_de_fundo	grau_encefalopatia	eventos_criticos_marcados
+EX0001	nao	0		normal	grave	sim
+EX0002	sim	1	focal	surto-supressao	grave	sim
+EX0003	nao	0		normal	moderada	sim
+EX0004	nao	0		normal	grave	sim
+EX0005	nao	0		normal	grave	sim
+EX0006	sim	3	focal	lento difuso	leve	sim
+EX0007	sim	17	focal	lento difuso	moderada	sim
+EX0008	nao	0		normal	leve	sim
+EX0009	sim	15	focal	lento difuso	leve	sim
+EX0010	nao	0		normal	moderada	sim
+EX0011	nao	0		normal	leve	sim
+EX0012	nao	0		normal	grave	sim
+EX0013	nao	0		normal	leve	sim
+EX0014	nao	0		normal	moderada	sim
+EX0015	sim	9	focal	lento difuso	leve	sim
+EX0016	nao	0		normal	leve	sim
+EX0017	nao	0		normal	grave	sim
+EX0018	nao	0		normal	moderada	sim
+EX0019	nao	0		normal	leve	sim
+EX0020	nao	0		normal	grave	nao
+EX0021	sim	20	focal	lento difuso	leve	sim
+EX0022	nao	0		normal	leve	sim
+EX0023	nao	0		normal	grave	nao
+EX0024	nao	0		normal	moderada	sim
+EX0025	nao	0		normal	grave	sim
+EX0026	nao	0		normal	grave	sim
+EX0027	nao	0		normal	moderada	sim
+EX0028	nao	0		normal	grave	sim
+EX0029	nao	0		normal	grave	sim
+EX0030	nao	0		normal	grave	sim
+EX0031	nao	0		normal	moderada	sim
+EX0032	nao	0		normal	grave	sim
+EX0033	nao	0		normal	grave	sim
+EX0034	sim	9	focal	lento difuso	grave	sim
+EX0035	nao	0		normal	grave	sim
+EX0036	nao	0		normal	grave	sim
+EX0037	nao	0		normal	moderada	sim
+EX0038	nao	0		normal	moderada	sim
+EX0039	nao	0		normal	grave	sim
+EX0040	nao	0		normal	leve	sim
+EX0041	nao	0		normal	grave	sim
+EX0042	nao	0		normal	leve	nao
+EX0043	nao	0		normal	moderada	sim
+EX0044	nao	0		normal	moderada	sim
+EX0045	nao	0		normal	grave	sim
+EX0046	nao	0		normal	moderada	sim
+EX0047	sim	9	focal	lento difuso	grave	sim
+EX0048	nao	0		normal	grave	sim
+EX0049	sim	3	focal	lento difuso	leve	nao
+EX0050	sim	2	focal	lento difuso	moderada	sim
+EX0051	nao	0		normal	moderada	sim
+EX0052	sim	3	focal	surto-supressao	leve	nao
+EX0053	nao	0		normal	moderada	sim
+EX0054	sim	1	focal	lento difuso	grave	sim
+EX0055	nao	0		normal	grave	sim
+EX0056	sim	2	focal	lento difuso	moderada	sim
+EX0057	sim	2	focal	surto-supressao	leve	sim
+EX0058	nao	0		normal	moderada	sim
+EX0059	nao	0		normal	grave	sim
+EX0060	nao	0		normal	leve	sim
+EX0061	sim	2	focal	lento difuso	leve	sim
+EX0062	sim	1	focal	surto-supressao	leve	sim
+EX0063	nao	0		normal	grave	nao
+EX0064	nao	0		normal	grave	sim
+EX0065	sim	3	focal	lento difuso	moderada	sim
+EX0066	nao	0		normal	leve	sim
+EX0067	sim	2	focal	lento difuso	grave	sim
+EX0068	sim	2	focal	lento difuso	moderada	nao
+EX0069	nao	0		normal	moderada	sim
+EX0070	nao	0		normal	grave	sim
+EX0071	nao	0		normal	moderada	sim
+EX0072	sim	3	focal	lento difuso	leve	sim
+EX0073	nao	0		normal	leve	sim
+EX0074	nao	0		normal	grave	sim
+EX0075	sim	2	focal	lento difuso	leve	sim
+EX0076	nao	0		normal	grave	sim
+EX0077	sim	3	focal	lento difuso	grave	sim
+EX0078	nao	0		normal	grave	sim
+EX0079	nao	0		normal	moderada	sim
+EX0080	nao	0		normal	grave	sim
+EX0081	nao	0		normal	leve	sim
+EX0082	sim	20	focal	surto-supressao	grave	sim
+EX0083	nao	0		normal	leve	sim
+EX0084	sim	1	focal	lento difuso	moderada	sim
+EX0085	sim	1	focal	lento difuso	moderada	sim
+EX0086	nao	0		normal	grave	sim
+EX0087	nao	0		normal	grave	sim
+EX0088	sim	1	focal	lento difuso	leve	sim
+EX0089	sim	2	focal	lento difuso	moderada	sim
+EX0090	nao	0		normal	grave	sim
+EX0091	nao	0		normal	leve	sim
+EX0092	sim	17	focal	surto-supressao	grave	sim
+EX0093	nao	0		normal	leve	sim
+EX0094	nao	0		normal	grave	sim
+EX0095	nao	0		normal	leve	sim
+EX0096	nao	0		normal	grave	sim
+EX0097	nao	0		normal	grave	sim
+EX0098	nao	0		normal	grave	sim
+EX0099	sim	1	focal	lento difuso	grave	sim
+EX0100	nao	0		normal	grave	sim
+EX0101	nao	0		normal	grave	sim
+EX0102	nao	0		normal	leve	sim
+EX0103	nao	0		normal	grave	sim
+EX0104	sim	13	focal	surto-supressao	grave	nao
+EX0105	nao	0		normal	grave	sim
+EX0106	sim	3	focal	lento difuso	leve	nao
+EX0107	nao	0		normal	moderada	sim
+EX0108	sim	13	focal	lento difuso	leve	nao
+EX0109	sim	1	focal	surto-supressao	leve	sim
+EX0110	nao	0		normal	moderada	sim
+EX0111	nao	0		normal	moderada	sim
+EX0112	sim	2	focal	surto-supressao	grave	sim
+EX0113	nao	0		normal	leve	sim
+EX0114	nao	0		normal	leve	sim
+EX0115	sim	3	focal	lento difuso	moderada	nao
+EX0116	sim	17	focal	lento difuso	grave	sim
+EX0117	sim	9	focal	lento difuso	grave	nao
+EX0118	sim	3	focal	lento difuso	moderada	sim
+EX0119	sim	2	focal	lento difuso	leve	sim
+EX0120	sim	8	focal	lento difuso	leve	sim
